@@ -1,0 +1,66 @@
+services:
+  momly_adminer:
+    image: adminer
+    ports:
+      - 8888:8080
+    networks:
+      - bridge-network
+
+  momly_psql:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+    volumes:
+      - psql:/var/lib/postgres/data
+    networks:
+      - bridge-network
+
+  momly_redis:
+    image: redis:7.0.11
+    command: redis-server
+    networks:
+      - bridge-network
+
+  momly_backend:
+    tty: true
+    stdin_open: true
+    build:
+      context: .
+      dockerfile: ./.dockerdev/Dockerfile.dev
+    working_dir: /app
+    volumes:
+      - .:/app
+      - bundle_cache:/bundle
+    environment:
+      DATABASE_POOL: 5
+      DATABASE_HOST: momly_psql
+      DATABASE_PORT: 5432
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: postgres
+      REDIS_URL: redis://momly_redis:6379
+      BUNDLE_PATH: /bundle
+      RAILS_ENV: development
+      PORT: 3000
+    command: /bin/sh ".dockerdev/commander/rails.sh"
+    ports:
+      - "3001:3000"
+    depends_on:
+      - momly_psql
+      - momly_redis
+    networks:
+      - bridge-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://0.0.0.0:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+networks:
+  bridge-network:
+
+volumes:
+  psql:
+  ollama_data:
+  bundle_cache:
+  node_modules:

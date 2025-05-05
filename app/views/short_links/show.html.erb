@@ -1,0 +1,7 @@
+<h1>Link đã rút gọn</h1>
+
+<p><strong>URL gốc:</strong> <%= @short_link.original_url %></p>
+<p><strong>Link ngắn:</strong> <%= link_to redirect_short_url(@short_link.short_code), redirect_short_url(@short_link.short_code), target: "_blank" %></p>
+<p><strong>Số lượt click:</strong> <%= @short_link.click_count %></p>
+
+<%= link_to "Tạo link mới", new_short_link_path, class: "btn btn-secondary" %>

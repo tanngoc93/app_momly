@@ -1,0 +1,78 @@
+<div class="container my-5" style="max-width: 520px;">
+  <h2 class="fw-bold text-white text-center mb-1">Edit your profile</h2>
+  <p class="text-secondary text-center mb-4">Update your info and token</p>
+
+  <div class="bg-white rounded-4 shadow-sm p-4 p-md-5">
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+      <% if resource.errors.any? %>
+        <div class="alert alert-danger">
+          <strong>There were some errors:</strong>
+          <ul class="mb-0 ps-3">
+            <% resource.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="mb-3">
+        <%= f.label :email, class: "form-label fw-semibold" %>
+        <%= f.email_field :email, class: "form-control form-control-lg rounded-3 shadow-sm" %>
+      </div>
+
+      <div class="mb-3">
+        <%= f.label :name, class: "form-label fw-semibold" %>
+        <%= f.text_field :name, class: "form-control form-control-lg rounded-3 shadow-sm" %>
+      </div>
+
+      <div class="mb-3">
+        <%= f.label :password, "New password", class: "form-label fw-semibold" %>
+        <%= f.password_field :password, autocomplete: "off", placeholder: "Leave blank if unchanged", class: "form-control form-control-lg rounded-3 shadow-sm" %>
+      </div>
+
+      <div class="mb-4">
+        <%= f.label :current_password, class: "form-label fw-semibold" %>
+        <%= f.password_field :current_password, autocomplete: "off", class: "form-control form-control-lg rounded-3 shadow-sm" %>
+      </div>
+
+      <div class="d-grid">
+        <%= f.submit "Update", class: "btn btn-primary btn-lg fw-semibold rounded-3 shadow-sm" %>
+      </div>
+    <% end %>
+
+    <hr class="my-4">
+
+    <div class="text-start">
+      <label class="fw-bold mb-2 d-block">Your API Token</label>
+      <div class="input-group input-group-lg">
+        <input type="text"
+               id="apiToken"
+               class="form-control font-monospace"
+               value="<%= resource.api_token %>"
+               readonly>
+        <button class="btn btn-outline-secondary"
+                type="button"
+                onclick="copyApiToken(this)">Copy</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function copyApiToken(btn) {
+    const input = document.getElementById("apiToken");
+    input.select();
+    navigator.clipboard.writeText(input.value).then(() => {
+      const original = btn.innerText;
+      btn.innerText = "Copied!";
+      btn.classList.remove("btn-outline-secondary");
+      btn.classList.add("btn-success");
+      setTimeout(() => {
+        btn.innerText = original;
+        btn.classList.add("btn-outline-secondary");
+        btn.classList.remove("btn-success");
+      }, 1500);
+    });
+  }
+</script>
+
