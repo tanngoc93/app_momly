@@ -1,0 +1,64 @@
+version: "3.9"
+
+networks:
+  public-network:
+    driver: overlay
+    external: true
+
+  private-network:
+    driver: overlay
+    external: true
+
+services:
+  momly_web:
+    image: tanngoc93/momly:latest
+    working_dir: /app
+    volumes:
+      # - "/root/momly/logs:/app/log"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    environment:
+      RAILS_MASTER_KEY: "c7ebc6ee15735be6808a56391251f1aa"
+      DATABASE_POOL: ${DATABASE_POOL}
+      DATABASE_HOST: ${DATABASE_HOST}
+      DATABASE_PORT: ${DATABASE_PORT}
+      DATABASE_USER: ${POSTGRES_USER}
+      DATABASE_PASSWORD: ${POSTGRES_PASSWORD}
+      DATABASE_PRODUCTION: "momly_production"
+      RAILS_ENV: ${RAILS_ENV:-production}
+      PORT: ${PORT:-3000}
+    command: /bin/sh "/app/.dockerdev/commander/rails.sh"
+    deploy:
+      mode: replicated
+      replicas: 1
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=public-network"
+        - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+
+        - "traefik.http.routers.momly-http.rule=Host(`momly.app`)"
+        - "traefik.http.routers.momly-http.entrypoints=web"
+
+        - "traefik.http.routers.momly-secured.rule=Host(`momly.app`)"
+        - "traefik.http.routers.momly-secured.entrypoints=websecured"
+        - "traefik.http.routers.momly-secured.tls.certresolver=myhttpchallenge"
+
+        - "traefik.http.services.momly-svc.loadbalancer.server.port=3000"
+      update_config:
+        parallelism: 1
+        delay: 60s
+        failure_action: rollback
+        monitor: 10s
+        order: start-first
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+    stop_grace_period: 30s
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - private-network
+      - public-network
