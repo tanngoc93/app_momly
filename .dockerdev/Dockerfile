@@ -1,6 +1,9 @@
 FROM ruby:3.1.2-slim
 
+ARG ARG_RAILS_MASTER_KEY
+
 ENV PORT=3000 \
+    RAILS_MASTER_KEY=$ARG_RAILS_MASTER_KEY \
     RAILS_ENV=production \
     BUNDLE_PATH=/bundle \
     APP_DIR=/app \
