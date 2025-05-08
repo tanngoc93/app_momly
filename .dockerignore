@@ -1,0 +1,8 @@
+.git
+log/*
+tmp/*
+test
+spec
+node_modules
+.bundle
+coverage
