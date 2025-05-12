@@ -1,0 +1,26 @@
+<%= turbo_frame_tag "my_links_frame" do %>
+  <% if @short_links.any? %>
+    <ul class="list-group">
+      <% @short_links.each do |link| %>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <div>
+            <small class="text-muted d-block mb-1"><%= link.original_url.truncate(60) %></small>
+            <strong><%= link_to redirect_short_url(link.short_code), redirect_short_url(link.short_code), target: "_blank" %></strong>
+          </div>
+          <button class="btn btn-sm btn-outline-secondary" onclick="copyToClipboard('<%= redirect_short_url(link.short_code) %>')">Copy</button>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <div class="text-center py-4">
+      <img src="https://cdn-icons-png.flaticon.com/512/463/463574.png"
+           alt="No links"
+           width="72"
+           height="72"
+           class="mb-3 opacity-75" />
+      <h6 class="fw-semibold text-muted">No short links found</h6>
+      <p class="small text-secondary mb-3">You haven’t created any short links yet. Start by entering a URL below.</p>
+      <%= link_to "Shorten a new link", root_path, class: "btn btn-sm btn-primary" %>
+    </div>
+  <% end %>
+<% end %>

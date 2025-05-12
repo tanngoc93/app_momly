@@ -1,0 +1,20 @@
+<div class="redirect-container">
+  <h1>Redirecting...</h1>
+  <p>You will be redirected in <span id="countdown">3</span> seconds.</p>
+  <p>If it doesn’t happen automatically, <a href="<%= @short_link.original_url %>">click here</a>.</p>
+  <button class="redirect-button" onclick="window.location.href='<%= @short_link.original_url %>'">Go Now</button>
+</div>
+
+<script>
+  let seconds = 5;
+  const countdown = document.getElementById("countdown");
+
+  const timer = setInterval(() => {
+    seconds--;
+    countdown.textContent = seconds;
+    if (seconds <= 0) {
+      clearInterval(timer);
+      window.location.href = "<%= @short_link.original_url %>";
+    }
+  }, 1000);
+</script>

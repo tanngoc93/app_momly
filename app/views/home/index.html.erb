@@ -1,0 +1,173 @@
+<% if user_signed_in? %>
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+  <!-- Custom style -->
+  <style>
+    .shortLink-page {
+      min-height: 100vh;
+      background-color: #00193A;
+      font-family: 'Helvetica Neue', sans-serif;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .hero-section {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding-top: 60px;
+      padding-bottom: 30px;
+      color: white;
+    }
+
+    .form-section {
+      display: flex;
+      justify-content: center;
+      padding-bottom: 60px;
+    }
+
+    @media (max-width: 768px) {
+      .hero-section {
+        padding-top: 20px;
+      }
+    }
+  </style>
+
+  <!-- Hero Section -->
+  <div class="hero-section container text-center">
+    <h1 class="display-5 fw-bold">Build stronger digital connections</h1>
+    <p class="lead mt-3">
+      Use Momly to shorten links and share clean URLs effortlessly.<br>
+      Build, edit, and track everything — simple and free.
+    </p>
+
+    <div class="mt-4">
+      <button class="btn btn-light me-2 px-4 py-2 fw-semibold">🔗 Short link</button>
+      <button class="btn btn-outline-light px-4 py-2 fw-semibold" disabled>📷 QR Code</button>
+    </div>
+  </div>
+
+  <!-- Shorten Link Form -->
+  <div class="form-section container">
+    <div class="bg-white p-4 p-md-5 rounded-4 shadow" style="max-width: 960px; width: 100%;">
+      <h4 class="fw-bold mb-3 text-center">Shorten a long link</h4>
+      <p class="text-muted text-center mb-4">No credit card required.</p>
+
+      <%= form_with model: ShortLink.new, url: short_links_path, data: { turbo_frame: "form_response" }, class: "d-flex flex-column gap-3" do |f| %>
+        <div class="input-group input-group-lg">
+          <%= f.text_field :original_url, placeholder: "https://example.com/your-url", class: "form-control", autofocus: true %>
+        </div>
+        <%= f.submit "Get your link for free ➜", class: "btn btn-primary btn-lg fw-semibold mt-2" %>
+      <% end %>
+
+      <!-- Kết quả -->
+      <div class="mt-4">
+        <turbo-frame id="form_response"></turbo-frame>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function copyShortResult() {
+      const input = document.getElementById("shortLinkDisplay");
+      input.select();
+      input.setSelectionRange(0, 99999);
+      document.execCommand("copy");
+      alert("Copied to clipboard!");
+    }
+  </script>
+<% else %>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    .hero-guest {
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      color: #1e293b;
+      padding: 100px 0;
+      text-align: center;
+    }
+
+    .btn-rounded {
+      border-radius: 999px;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+
+    .btn-primary {
+      background-color: #3b82f6;
+      border-color: #3b82f6;
+    }
+
+    .btn-outline-secondary {
+      border-color: #64748b;
+      color: #64748b;
+    }
+
+    .btn-outline-secondary:hover {
+      background-color: #e2e8f0;
+      color: #1e293b;
+    }
+
+    .features img {
+      width: 64px;
+      height: 64px;
+      margin-bottom: 1rem;
+    }
+
+    .section-heading {
+      font-weight: 700;
+      font-size: 2rem;
+      margin-bottom: 2rem;
+      color: #1e293b;
+    }
+
+    footer {
+      background-color: #f1f5f9;
+    }
+  </style>
+
+  <section class="hero-guest">
+    <div class="container">
+      <h1 class="display-4 fw-bold mb-3">Simplify Your Links with Momly</h1>
+      <p class="lead mb-4">A fast, privacy-first link shortener crafted for creators and modern teams.</p>
+      <div class="d-flex justify-content-center gap-3">
+        <%= link_to "Get Started", new_user_registration_path, class: "btn btn-primary btn-lg btn-rounded shadow-sm text-white" %>
+        <%= link_to "Login", new_user_session_path, class: "btn btn-outline-secondary btn-lg btn-rounded" %>
+      </div>
+    </div>
+  </section>
+
+  <section class="features py-5 bg-white">
+    <div class="container">
+      <h2 class="text-center section-heading">Why Choose Momly?</h2>
+      <div class="row text-center">
+        <div class="col-md-4 mb-4">
+          <img src="https://cdn-icons-png.flaticon.com/512/942/942748.png" alt="Privacy" />
+          <h5 class="fw-semibold">Privacy First</h5>
+          <p class="text-muted">No tracking, no ads — your data and links are safe and private.</p>
+        </div>
+        <div class="col-md-4 mb-4">
+          <img src="https://cdn-icons-png.flaticon.com/512/9192/9192029.png" alt="Speed" />
+          <h5 class="fw-semibold">Lightning Fast</h5>
+          <p class="text-muted">Built for performance. Instant redirection, no delays.</p>
+        </div>
+        <div class="col-md-4 mb-4">
+          <img src="https://cdn-icons-png.flaticon.com/512/2910/2910791.png" alt="Control" />
+          <h5 class="fw-semibold">Total Control</h5>
+          <p class="text-muted">Edit, manage, and delete your links anytime, from anywhere.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="text-center py-4 small text-muted">
+    &copy; <%= Time.current.year %> Momly. Built with ❤️ for speed and simplicity.
+  </footer>
+<% end %>

@@ -18,18 +18,14 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark py-3" style="background-color: #00193A;">
       <div class="container-lg" style="max-width: 1140px;">
-        <a class="navbar-brand fw-bold text-white" href="/">Momly</a>
+        <a class="navbar-brand fw-bold text-white" href="<%= user_signed_in? ? root_path : new_user_session_path %>">Momly</a>
 
         <div class="ms-auto d-flex align-items-center gap-2">
           <% if user_signed_in? %>
-            <span class="text-white small">Hi, <%= current_user.email %></span>
-
             <%= button_tag "My Links", class: "btn btn-outline-light btn-sm", data: { bs_toggle: "modal", bs_target: "#myLinksModal" } %>
-
             <%= link_to "Setting", edit_user_registration_path, class: "btn btn-outline-light btn-sm" %>
-
             <%= button_to "Logout", destroy_user_session_path, method: :delete,
-                class: "btn btn-light btn-sm", form: { class: "d-inline" } %>
+                  class: "btn btn-light btn-sm", form: { class: "d-inline" } %>
           <% else %>
             <%= link_to "Login", new_user_session_path, class: nav_button_class(:login) %>
             <%= link_to "Sign Up", new_user_registration_path, class: nav_button_class(:signup) %>
@@ -52,25 +48,9 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <% if user_signed_in? %>
-              <% if current_user.short_links.any? %>
-                <ul class="list-group">
-                  <% current_user.short_links.order(created_at: :desc).each do |link| %>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                      <div>
-                        <small class="text-muted d-block mb-1"><%= link.original_url.truncate(60) %></small>
-                        <strong><%= link_to redirect_short_url(link.short_code), redirect_short_url(link.short_code), target: "_blank" %></strong>
-                      </div>
-                      <button class="btn btn-sm btn-outline-secondary" onclick="copyToClipboard('<%= redirect_short_url(link.short_code) %>')">Copy</button>
-                    </li>
-                  <% end %>
-                </ul>
-              <% else %>
-                <p class="text-muted">You haven’t created any short links yet.</p>
-              <% end %>
-            <% else %>
-              <p class="text-danger">Please log in to view your short links.</p>
-            <% end %>
+            <turbo-frame id="my_links_frame" src="<%= my_links_modal_path %>" data-src="<%= my_links_modal_path %>">
+              <div class="text-center py-4 text-muted">Loading your links...</div>
+            </turbo-frame>
           </div>
         </div>
       </div>
@@ -82,6 +62,18 @@
           alert("Copied to clipboard!");
         });
       }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const modalEl = document.getElementById("myLinksModal");
+        if (!modalEl) return;
+
+        modalEl.addEventListener("show.bs.modal", () => {
+          const frame = document.getElementById("my_links_frame");
+          if (frame) {
+            frame.src = frame.dataset.src; // force reload every open
+          }
+        });
+      });
     </script>
   </body>
 </html>

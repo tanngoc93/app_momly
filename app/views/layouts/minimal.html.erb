@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Redirecting...</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <style>
+      body {
+        background-color: #0d1b2a;
+        color: #ffffff;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        flex-direction: column;
+        padding: 1rem;
+        text-align: center;
+      }
+
+      .brand {
+        font-size: 22px;
+        font-weight: bold;
+        margin-bottom: 24px;
+        color: #ffffff;
+      }
+
+      .redirect-container {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 32px;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        width: 100%;
+        max-width: 420px;
+      }
+
+      .redirect-container h1 {
+        font-size: 26px;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+
+      .redirect-container p {
+        font-size: 16px;
+        color: #cbd5e1;
+        margin: 10px 0;
+      }
+
+      .redirect-container a {
+        color: #60a5fa;
+        text-decoration: underline;
+      }
+
+      .redirect-button {
+        margin-top: 20px;
+        background-color: #60a5fa;
+        color: #fff;
+        border: none;
+        padding: 10px 24px;
+        border-radius: 6px;
+        font-size: 16px;
+        cursor: pointer;
+        width: 100%;
+        max-width: 200px;
+        transition: background-color 0.3s ease;
+      }
+
+      .redirect-button:hover {
+        background-color: #3b82f6;
+      }
+
+      @media (max-width: 480px) {
+        .redirect-container {
+          padding: 24px;
+        }
+
+        .redirect-button {
+          font-size: 15px;
+          padding: 10px 16px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <%= yield %>
+  </body>
+</html>
