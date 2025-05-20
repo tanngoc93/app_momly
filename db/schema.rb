@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_05_05_174154) do
+ActiveRecord::Schema[7.0].define(version: 2025_05_20_045700) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -18,12 +18,13 @@ ActiveRecord::Schema[7.0].define(version: 2025_05_05_174154) do
     t.string "original_url"
     t.string "short_code"
     t.integer "click_count"
-    t.bigint "user_id", null: false
+    t.bigint "user_id"
     t.integer "post_id"
     t.string "source"
     t.string "plan_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "last_accessed_at"
     t.index ["short_code"], name: "index_short_links_on_short_code"
     t.index ["user_id"], name: "index_short_links_on_user_id"
   end

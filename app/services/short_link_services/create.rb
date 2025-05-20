@@ -9,13 +9,16 @@ module ShortLinkServices
 
     def call
       normalized_url = normalize_url(@original_url)
-
       raise ArgumentError, "original_url can't be blank" if normalized_url.blank?
 
-      existing_link = @user.short_links.find_by(original_url: normalized_url)
+      scope = ShortLink.where(user_id: @user&.id)
+      existing_link = scope.find_by(original_url: normalized_url)
       return existing_link if existing_link
 
-      @user.short_links.create!(original_url: normalized_url)
+      ShortLink.create!(
+        original_url: normalized_url,
+        user: @user
+      )
     end
 
     private

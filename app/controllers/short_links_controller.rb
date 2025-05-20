@@ -22,7 +22,10 @@ class ShortLinksController < ApplicationController
 
   def redirect
     @short_link = ShortLink.find_by!(short_code: params[:short_code])
+
     @short_link.increment!(:click_count)
+    @short_link.update_column(:last_accessed_at, Time.current)
+
     render :wait_redirect, layout: "minimal"
   end
 
