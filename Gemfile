@@ -74,8 +74,10 @@ group :test do
   gem "selenium-webdriver"
 end
 
+# 
 gem "rack-attack"
 
+# 
 gem "recaptcha"
 gem "google-api-client"
 

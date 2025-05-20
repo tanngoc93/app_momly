@@ -1,25 +1,29 @@
+# frozen_string_literal: true
+
 class ShortLinksController < ApplicationController
   skip_before_action :authenticate_user!, only: [:redirect]
+
+  def create
+    @short_link = ShortLinkServices::Create.new(
+      user: current_user,
+      original_url: short_link_params[:original_url]
+    ).call
+
+    respond_to do |format|
+      format.turbo_stream
+      format.html { redirect_to root_path, notice: "Link shortened!" }
+    end
+  rescue ArgumentError, ActiveRecord::RecordInvalid => e
+    respond_to do |format|
+      format.turbo_stream
+      format.html { redirect_to root_path, alert: e.message }
+    end
+  end
 
   def redirect
     @short_link = ShortLink.find_by!(short_code: params[:short_code])
     @short_link.increment!(:click_count)
     render :wait_redirect, layout: "minimal"
-  end
-
-  def create
-    @short_link = current_user.short_links.find_by(original_url: short_link_params[:original_url]) ||
-                  current_user.short_links.new(short_link_params)
-
-    respond_to do |format|
-      if @short_link.persisted? || @short_link.save
-        format.turbo_stream
-        format.html { redirect_to root_path, notice: "Link shortened!" }
-      else
-        format.turbo_stream
-        format.html { render :home, status: :unprocessable_entity }
-      end
-    end
   end
 
   def modal
