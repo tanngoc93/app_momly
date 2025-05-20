@@ -3,7 +3,6 @@ Rails.application.routes.draw do
     registrations: 'users/registrations'
   }
 
-
   # Health check (important for Docker, uptime monitoring, etc.)
   get "/health", to: proc { [200, { "Content-Type" => "text/plain" }, ["OK"]] }
 

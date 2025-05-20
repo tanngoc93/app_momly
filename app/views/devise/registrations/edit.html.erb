@@ -5,14 +5,20 @@
 
     <div class="bg-white rounded-4 shadow-sm p-4 p-md-5">
       <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-        <% if resource.errors.any? %>
-          <div class="alert alert-danger">
-            <strong>There were some errors:</strong>
+
+        <% if resource && resource.errors.any? %>
+          <div class="alert alert-danger text-start mb-3">
+            <strong class="d-block mb-2">There were some errors:</strong>
             <ul class="mb-0 ps-3">
               <% resource.errors.full_messages.each do |msg| %>
                 <li><%= msg %></li>
               <% end %>
             </ul>
+          </div>
+        <% elsif flash[:alert] %>
+          <div class="alert alert-danger text-start mb-3">
+            <strong class="d-block mb-2">Oops! Something went wrong:</strong>
+            <p class="mb-0"><%= flash[:alert] %></p>
           </div>
         <% end %>
 
