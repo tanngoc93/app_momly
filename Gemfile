@@ -76,5 +76,9 @@ end
 
 gem "rack-attack"
 
-gem "devise"
+gem "recaptcha"
+gem "google-api-client"
 
+gem "devise"
+gem "omniauth"
+gem "omniauth-google-oauth2"

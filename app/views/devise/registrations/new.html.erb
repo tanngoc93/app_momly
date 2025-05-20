@@ -21,6 +21,7 @@
           <%= f.email_field :email, autofocus: true, placeholder: "Email", class: "form-control form-control-lg rounded-3 shadow-sm" %>
           <%= f.password_field :password, autocomplete: "new-password", placeholder: "Password", class: "form-control form-control-lg rounded-3 shadow-sm" %>
           <%= f.password_field :password_confirmation, placeholder: "Confirm Password", class: "form-control form-control-lg rounded-3 shadow-sm" %>
+          <%= recaptcha_tags %>
           <%= f.submit "Sign up", class: "btn btn-primary btn-lg fw-semibold rounded-3 shadow-sm" %>
         <% end %>
 
