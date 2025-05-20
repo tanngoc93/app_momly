@@ -12,6 +12,7 @@ module Api
 
       def authenticate_with_token!
         token = request.headers["Authorization"].to_s.remove("Bearer ").strip
+
         @current_user = User.find_by(api_token: token)
 
         unless @current_user

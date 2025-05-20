@@ -23,7 +23,7 @@ class ShortLinksController < ApplicationController
   end
 
   def modal
-    @short_links = current_user.short_links.order(created_at: :desc)
+    @short_links = current_user.short_links.order(updated_at: :desc)
     render partial: "short_links/modal_links"
   end
 
