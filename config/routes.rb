@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, controllers: {
+    registrations: 'users/registrations'
+  }
+
 
   # Health check (important for Docker, uptime monitoring, etc.)
   get "/health", to: proc { [200, { "Content-Type" => "text/plain" }, ["OK"]] }
