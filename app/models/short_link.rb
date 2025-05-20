@@ -1,5 +1,5 @@
 class ShortLink < ApplicationRecord
-  belongs_to :user
+  belongs_to :user, optional: true
 
   validates :original_url, presence: true, format: URI::regexp(%w[http https])
   validates :short_code, presence: true, uniqueness: true

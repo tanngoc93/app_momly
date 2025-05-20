@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ShortLinksController < ApplicationController
-  skip_before_action :authenticate_user!, only: [:redirect]
+  skip_before_action :authenticate_user!, only: [:create, :redirect]
 
   def create
     @short_link = ShortLinkServices::Create.new(

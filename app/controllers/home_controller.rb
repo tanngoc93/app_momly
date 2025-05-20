@@ -3,5 +3,7 @@
 class HomeController < ApplicationController
   skip_before_action :authenticate_user!, only: [:index]
 
-  def index; end
+  def index
+    @guest_mode = params[:guest_mode] == "on"
+  end
 end

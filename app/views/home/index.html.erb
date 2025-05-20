@@ -1,4 +1,4 @@
-<% if user_signed_in? %>
+<% if user_signed_in? || @guest_mode %>
   <!-- Bootstrap Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
@@ -138,8 +138,10 @@
       <h1 class="display-4 fw-bold mb-3">Simplify Your Links with Momly</h1>
       <p class="lead mb-4">A fast, privacy-first link shortener crafted for creators and modern teams.</p>
       <div class="d-flex justify-content-center gap-3">
-        <%= link_to "Get Started", new_user_registration_path, class: "btn btn-primary btn-lg btn-rounded shadow-sm text-white" %>
-        <%= link_to "Login", new_user_session_path, class: "btn btn-outline-secondary btn-lg btn-rounded" %>
+        <%= link_to "Get Started", new_user_registration_path, class: "btn btn-success btn-lg btn-rounded shadow-sm text-white" %>
+
+        <%= link_to "Continue as Guest", root_path(guest_mode: "on"),
+            class: "btn btn-outline-dark btn-lg btn-rounded" %>
       </div>
     </div>
   </section>
