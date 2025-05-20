@@ -3,6 +3,8 @@
 class ShortLinksController < ApplicationController
   skip_before_action :authenticate_user!, only: [:create, :redirect]
 
+  before_action :ensure_guest_or_user!, only: :create
+
   def create
     @short_link = ShortLinkServices::Create.new(
       user: current_user,
@@ -38,5 +40,21 @@ class ShortLinksController < ApplicationController
 
   def short_link_params
     params.require(:short_link).permit(:original_url)
+  end
+
+  def ensure_guest_or_user!
+    return if current_user.present? || valid_guest_token?(params[:guest_token])
+
+    head :forbidden
+  end
+
+  def valid_guest_token?(token)
+    return false if token.blank?
+
+    verifier = ActiveSupport::MessageVerifier.new(Rails.application.secret_key_base)
+    data = verifier.verify(token)
+    data.is_a?(Hash) && (data["guest_mode"] == true || data[:guest_mode] == true)
+  rescue ActiveSupport::MessageVerifier::InvalidSignature, StandardError
+    false
   end
 end

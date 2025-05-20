@@ -1,6 +1,13 @@
 # frozen_string_literal: true
 
 class Rack::Attack
+  # Throttle: Guest short link creation (10 per 5 minutes)
+  throttle('limit guest short_links#create per IP', limit: 3, period: 5.minutes) do |req|
+    if req.path == '/short_links' && req.post?
+      req.params['guest_mode'] == 'on' ? req.ip : nil
+    end
+  end
+
   # Throttle sign-up requests:
   # Allow up to 10 POST /register requests per IP in 1 hour
   throttle('limit signups per ip', limit: 10, period: 1.hour) do |req|

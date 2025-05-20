@@ -56,11 +56,17 @@
       <h4 class="fw-bold mb-3 text-center">Shorten a long link</h4>
       <p class="text-muted text-center mb-4">No credit card required.</p>
 
-      <%= form_with model: ShortLink.new, url: short_links_path, data: { turbo_frame: "form_response" }, class: "d-flex flex-column gap-3" do |f| %>
+      <%= form_tag short_links_path, method: :post, data: { turbo_frame: "form_response" }, class: "d-flex flex-column gap-3" do %>
+        <% unless user_signed_in? %>
+          <%= hidden_field_tag :guest_token, signed_guest_token %>
+        <% end %>
+
         <div class="input-group input-group-lg">
-          <%= f.text_field :original_url, placeholder: "https://example.com/your-url", class: "form-control", autofocus: true %>
+          <%= text_field_tag "short_link[original_url]", nil, placeholder: "https://example.com/your-url",
+                class: "form-control", autofocus: true %>
         </div>
-        <%= f.submit "Get your link for free ➜", class: "btn btn-primary btn-lg fw-semibold mt-2" %>
+
+        <%= submit_tag "Get your link for free ➜", class: "btn btn-primary btn-lg fw-semibold mt-2" %>
       <% end %>
 
       <!-- Kết quả -->

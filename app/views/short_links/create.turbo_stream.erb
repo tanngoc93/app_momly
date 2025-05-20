@@ -1,4 +1,4 @@
-<% if @short_link.persisted? %>
+<% if @short_link&.persisted? %>
   <turbo-stream target="form_response" action="update">
     <template>
       <div class="p-4 rounded-3 border border-success-subtle bg-success-subtle">
@@ -14,10 +14,16 @@
   <turbo-stream target="form_response" action="update">
     <template>
       <div class="alert alert-danger text-start">
-        <strong class="d-block mb-2">There was a problem:</strong>
+        <strong class="d-block mb-2">There was a problem creating your short link:</strong>
         <ul class="mb-0 ps-3">
-          <% @short_link.errors.full_messages.each do |msg| %>
-            <li><%= msg %></li>
+          <% if @short_link&.errors&.any? %>
+            <% @short_link.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          <% elsif defined?(@error_message) && @error_message.present? %>
+            <li><%= @error_message %></li>
+          <% else %>
+            <li>Unknown error occurred. Please try again.</li>
           <% end %>
         </ul>
       </div>
