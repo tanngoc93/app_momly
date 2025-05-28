@@ -1,0 +1,85 @@
+networks:
+  private-network:
+    driver: overlay
+    external: true
+
+services:
+  psql:
+    image: postgres:17.0
+    volumes:
+      - "/root/app/www/psql-data:/var/lib/postgresql/data"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    environment:
+      POSTGRES_USER: "${POSTGRES_USER}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+    networks:
+      - private-network
+    deploy:
+      resources:
+        limits:
+          memory: 768M
+        reservations:
+          memory: 256M
+      mode: replicated
+      placement:
+        constraints:
+          - node.role == manager
+      replicas: 1
+      labels:
+        - "traefik.enable=false"
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: any
+
+  redis:
+    image: redis:7.4.1
+    command: redis-server --appendonly yes
+    volumes:
+      - "/root/app/www/redis-data:/data"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    networks:
+      - private-network
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+        reservations:
+          memory: 64M
+      mode: replicated
+      placement:
+        constraints:
+          - node.role == manager
+      replicas: 1
+      labels:
+        - "traefik.enable=false"
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: any
+
+  redis-cache:
+    image: redis:7.4.1
+    command: redis-server --appendonly yes
+    volumes:
+      - "/root/app/www/redis-cache-data:/data"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    networks:
+      - private-network
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+        reservations:
+          memory: 64M
+      mode: replicated
+      replicas: 1
+      labels:
+        - "traefik.enable=false"
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: any
