@@ -12,7 +12,7 @@ services:
     image: tanngoc93/app_momly:latest
     working_dir: /app
     volumes:
-      # - "/root/momly/logs:/app/log"
+      - "/root/momly/logs:/app/log"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
     environment:
       # Rails & App
