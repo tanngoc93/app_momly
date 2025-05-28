@@ -361,6 +361,7 @@ DEPENDENCIES
   capybara
   debug
   devise
+  faraday
   google-api-client
   importmap-rails
   jbuilder
