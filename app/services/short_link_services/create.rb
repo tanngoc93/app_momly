@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module ShortLinkServices
+  class UnsafeUrlError < StandardError; end
+
   class Create
     def initialize(user:, original_url:)
       @user = user
@@ -14,11 +16,12 @@ module ShortLinkServices
     # - Returns existing short link if found
     # - Otherwise, creates a new one
     def call
+      raise ArgumentError, "Original URL can't be blank" if @original_url.blank?
+
       normalized_url = normalize_url(@original_url)
-      raise ArgumentError, "original_url can't be blank" if normalized_url.blank?
 
       unless GoogleSafeBrowsingService.safe_url?(normalized_url)
-        raise StandardError, "URL is unsafe or unreachable"
+        raise UnsafeUrlError, "URL is unsafe or unreachable"
       end
 
       scope = ShortLink.where(user_id: @user&.id)
