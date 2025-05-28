@@ -1,42 +1,69 @@
+# frozen_string_literal: true
+
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby "3.1.2"
 
-gem "rails", "~> 7.0.8", ">= 7.0.8.7"
-gem "pg", "~> 1.1"
-gem "puma", "~> 5.0"
-gem "importmap-rails"
-gem "turbo-rails"
-gem "stimulus-rails"
-gem "jbuilder"
-gem "sprockets-rails"
-gem "bootsnap", require: false
-gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
+# ----------------------------------------
+# Core Framework & Runtime
+# ----------------------------------------
+gem "rails",                   "~> 7.0.8", ">= 7.0.8.7"
+gem "pg",                      "~> 1.1"                  # PostgreSQL
+gem "puma",                    "~> 5.0"                  # Web server
+gem "sprockets-rails"                                     # Asset pipeline
+gem "importmap-rails"                                    # ESM for JS
+gem "turbo-rails"                                        # Hotwire: Turbo
+gem "stimulus-rails"                                     # Hotwire: Stimulus
+gem "jbuilder"                                           # JSON APIs
+gem "bootsnap",                require: false
+gem "tzinfo-data",             platforms: %i[mingw mswin x64_mingw jruby]
 
-# Security & external services
-gem "faraday"
-gem "rack-attack"
-gem "recaptcha"
-gem "google-api-client"
-
+# ----------------------------------------
 # Authentication
-gem "devise"
-gem "omniauth"
-gem "omniauth-google-oauth2"
+# ----------------------------------------
+gem "devise"                                              # User auth
+gem "omniauth"                                            # OAuth base
+gem "omniauth-google-oauth2"                              # Google OAuth
 
+# ----------------------------------------
+# External APIs & Security
+# ----------------------------------------
+gem "faraday"                                             # HTTP client
+gem "rack-attack"                                         # Rate limiter
+gem "google-api-client"                                   # Google API SDK
+gem "recaptcha"                                           # Google reCAPTCHA
+
+# ----------------------------------------
+# Background Jobs (optional)
+# ----------------------------------------
+# gem "sidekiq"
+
+# ----------------------------------------
+# File uploads / Cloud (optional)
+# ----------------------------------------
+# gem "carrierwave",             "~> 3.0"
+
+# ----------------------------------------
+# UI, Styling, JS Helpers (optional)
+# ----------------------------------------
+# gem "jquery-rails"
+
+# ----------------------------------------
+# Dev & Test Tools
+# ----------------------------------------
 group :development, :test do
-  gem "debug", platforms: %i[mri mingw x64_mingw]
+  gem "debug",                 platforms: %i[mri mingw x64_mingw]
 end
 
 group :development do
-  gem "rails-erd"
-  gem "letter_opener"
-  gem "letter_opener_web"
-  gem "web-console"
+  gem "rails-erd"                                         # Diagram
+  gem "letter_opener"                                     # Open emails in browser
+  gem "letter_opener_web"                                 # Web UI for above
+  gem "web-console"                                       # Rails console in browser
 end
 
 group :test do
-  gem "capybara"
-  gem "selenium-webdriver"
+  gem "capybara"                                          # Feature tests
+  gem "selenium-webdriver"                                # Browser driver
 end
