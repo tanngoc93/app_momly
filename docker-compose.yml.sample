@@ -12,7 +12,7 @@ services:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_USER=postgres
     volumes:
-      - psql:/var/lib/postgres/data
+      - psql:/var/lib/postgresql/data
     networks:
       - bridge-network
 
@@ -33,15 +33,25 @@ services:
       - .:/app
       - bundle_cache:/bundle
     environment:
-      DATABASE_POOL: 5
-      DATABASE_HOST: momly_psql
-      DATABASE_PORT: 5432
-      DATABASE_USER: postgres
-      DATABASE_PASSWORD: postgres
-      REDIS_URL: redis://momly_redis:6379
-      BUNDLE_PATH: /bundle
+		  # Database
+		  DATABASE_POOL: 5
+		  DATABASE_HOST: momly_psql
+		  DATABASE_PORT: 5432
+		  DATABASE_USER: postgres
+		  DATABASE_PASSWORD: postgres
+
+		  # Redis
+		  REDIS_URL: redis://momly_redis:6379
+
+		  # Rails
+		  PORT: 3000
       RAILS_ENV: development
-      PORT: 3000
+		  BUNDLE_PATH: /bundle
+
+		  # CAPTCHA
+		  RECAPTCHA_SITE_KEY: ""
+		  RECAPTCHA_SECRET_KEY: ""
+
     command: /bin/sh ".dockerdev/commander/rails.sh"
     ports:
       - "3001:3000"
@@ -51,7 +61,7 @@ services:
     networks:
       - bridge-network
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://0.0.0.0:3000/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -61,6 +71,4 @@ networks:
 
 volumes:
   psql:
-  ollama_data:
   bundle_cache:
-  node_modules:
