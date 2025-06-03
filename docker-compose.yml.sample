@@ -48,6 +48,10 @@ services:
 		  # Redis
 		  REDIS_URL: redis://momly_redis:6379
 
+      # Google Web App
+      GOOGLE_APP_ID: ""
+      GOOGLE_APP_SECRET: ""
+
 		  # Security & captcha
 		  RECAPTCHA_SITE_KEY: ""
 		  RECAPTCHA_SECRET_KEY: ""

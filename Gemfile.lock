@@ -227,6 +227,9 @@ GEM
     omniauth-oauth2 (1.8.0)
       oauth2 (>= 1.4, < 3)
       omniauth (~> 2.0)
+    omniauth-rails_csrf_protection (1.0.2)
+      actionpack (>= 4.2)
+      omniauth (~> 2.0)
     orm_adapter (0.5.0)
     os (1.1.4)
     pg (1.5.9)
@@ -300,6 +303,7 @@ GEM
     ruby-graphviz (1.2.5)
       rexml
     rubyzip (2.4.1)
+    seed_migration (1.2.3)
     selenium-webdriver (4.32.0)
       base64 (~> 0.2)
       logger (~> 1.4)
@@ -369,12 +373,14 @@ DEPENDENCIES
   letter_opener_web
   omniauth
   omniauth-google-oauth2
+  omniauth-rails_csrf_protection
   pg (~> 1.1)
   puma (~> 5.0)
   rack-attack
   rails (~> 7.0.8, >= 7.0.8.7)
   rails-erd
   recaptcha
+  seed_migration
   selenium-webdriver
   sprockets-rails
   stimulus-rails

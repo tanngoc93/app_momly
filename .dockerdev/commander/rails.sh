@@ -10,13 +10,13 @@ bundle check || (
   bundle install
 )
 
-# Wait until database is ready
-echo "[INFO] Waiting for database to be ready..."
-until bundle exec rails db:version > /dev/null 2>&1; do
-  echo "[WARN] Database is unavailable - retrying in 3 seconds..."
+# Wait until PostgreSQL is ready (not Rails)
+echo "[INFO] Waiting for PostgreSQL to be ready..."
+until pg_isready -h "$DATABASE_HOST" -p "$DATABASE_PORT" -U "$DATABASE_USER" > /dev/null 2>&1; do
+  echo "[WARN] PostgreSQL not ready - retrying in 3 seconds..."
   sleep 3
 done
-echo "[INFO] Database is ready."
+echo "[INFO] PostgreSQL is ready."
 
 # Export ERD file (only in development)
 if [ "$RAILS_ENV" = "development" ]; then

@@ -19,6 +19,14 @@
           <%= f.submit "Log in", class: "btn btn-primary btn-lg fw-semibold rounded-3 shadow-sm" %>
         <% end %>
 
+        <%= button_to user_google_oauth2_omniauth_authorize_path,
+            method: :post,
+            form: { "data-turbo" => "false" },
+            class: "btn btn-outline-danger btn-lg w-100 d-flex align-items-center justify-content-center gap-2" do %>
+          <img src="/assets/img/google.png" alt="Google icon" width="20" height="20">
+          Sign up with Google
+        <% end %>
+
         <div class="mt-3 text-center small">
           <%= link_to "Sign up", new_user_registration_path, class: "text-decoration-none" %>
           <span class="mx-2">·</span>

@@ -25,6 +25,12 @@ gem "tzinfo-data",             platforms: %i[mingw mswin x64_mingw jruby]
 gem "devise"                                              # User auth
 gem "omniauth"                                            # OAuth base
 gem "omniauth-google-oauth2"                              # Google OAuth
+gem "omniauth-rails_csrf_protection"
+
+# ----------------------------------------
+# Utilities & Helpers
+# ----------------------------------------
+gem "seed_migration"                                      # Data migrations
 
 # ----------------------------------------
 # External APIs & Security

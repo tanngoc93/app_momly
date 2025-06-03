@@ -1,17 +1,41 @@
 class User < ApplicationRecord
   # == Devise modules ==
-  # Others available: :confirmable, :lockable, :timeoutable, :trackable, :omniauthable
-  devise :database_authenticatable,
-         :registerable,
-         :recoverable,
-         :rememberable,
-         :validatable
+  # Others available:, :timeoutable
+  # === Devise Modules ===
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :validatable, :trackable, :lockable,
+         :omniauthable, omniauth_providers: [:google_oauth2]
 
   # == Associations ==
   has_many :short_links, dependent: :destroy
 
+  # === Validations ===
+  validates :email,
+            format: { with: URI::MailTo::EMAIL_REGEXP, message: "must be a valid email address" },
+            uniqueness: { case_sensitive: false, message: "has already been taken" },
+            presence: true
+
   # == Callbacks ==
   before_create :generate_api_token
+
+  # == Class Methods ==
+
+  ## OAuth Authentication
+  def self.find_or_create_from_omniauth(auth)
+    user = find_by(email: auth.info.email)
+
+    unless user
+      user = create(
+        email: auth.info.email,
+        password: Devise.friendly_token[0, 20],
+        name: auth.info.name
+      )
+
+      user.skip_confirmation!
+    end
+
+    user
+  end
 
   # == Instance methods ==
   private
