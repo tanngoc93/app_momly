@@ -18,12 +18,5 @@ module AppMomly
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
-
-    begin
-      config.hosts << "momly.me"
-      # config.hosts << URI.parse( ENV['HOST'] ).host if ENV['HOST'].present?
-    rescue => e
-      puts "Invalid URL: #{e.message}"
-    end
   end
 end
