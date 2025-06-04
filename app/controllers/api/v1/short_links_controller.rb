@@ -10,11 +10,17 @@ module Api
         ).call
 
         render json: {
-          short_url: redirect_short_url(short_link.short_code),
-          short_code: short_link.short_code
-        }
+          data: {
+            short_url: redirect_short_url(short_link.short_code),
+            short_code: short_link.short_code
+          }
+        }, status: :created
       rescue ArgumentError, ActiveRecord::RecordInvalid => e
-        render json: { error: e.message }, status: :unprocessable_entity
+        render json: {
+          errors: [
+            { detail: e.message }
+          ]
+        }, status: :unprocessable_entity
       end
     end
   end
