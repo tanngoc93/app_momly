@@ -31,6 +31,7 @@ gem "omniauth-rails_csrf_protection"
 # Utilities & Helpers
 # ----------------------------------------
 gem "seed_migration"                                      # Data migrations
+gem "pagy",                    "~> 9.3"                    # Pagination
 
 # ----------------------------------------
 # External APIs & Security

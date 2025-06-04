@@ -30,6 +30,24 @@
         </li>
       <% end %>
     </ul>
+
+    <div class="d-flex justify-content-center mt-4">
+      <%== pagy_bootstrap_nav(@pagy,
+            link_extra: 'data-turbo-frame="my_links_frame"',
+            steps: { 0 => [1,2,2,1] }) %>
+    </div>
+
+    <style>
+      .pagy-bootstrap .pagination {
+        font-size: 0.8rem;
+        padding: 0.25rem 0.5rem;
+      }
+
+      .pagy-bootstrap .page-link {
+        padding: 0.25rem 0.5rem;
+      }
+    </style>
+
   <% else %>
     <div class="text-center py-4">
       <img src="https://cdn-icons-png.flaticon.com/512/463/463574.png"

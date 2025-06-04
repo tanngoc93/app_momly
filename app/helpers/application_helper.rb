@@ -1,4 +1,6 @@
 module ApplicationHelper
+  include Pagy::Frontend
+
   def nav_button_class(name)
     if name == :login
       current_page?(new_user_session_path) ? "btn btn-light btn-sm" : "btn btn-outline-light btn-sm"

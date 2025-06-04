@@ -2,6 +2,7 @@
 
 class ShortLinksController < ApplicationController
   include ActionView::RecordIdentifier
+  include Pagy::Backend
 
   skip_before_action :authenticate_user!, only: [:create, :redirect]
 
@@ -61,7 +62,7 @@ class ShortLinksController < ApplicationController
   end
 
   def modal
-    @short_links = current_user.short_links.order(updated_at: :desc)
+    @pagy, @short_links = pagy(current_user.short_links.order(updated_at: :desc), items: 50)
     render partial: "short_links/modal_links"
   end
 

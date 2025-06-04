@@ -273,6 +273,7 @@ GEM
       omniauth (~> 2.0)
     orm_adapter (0.5.0)
     os (1.1.4)
+    pagy (9.3.4)
     pg (1.5.9)
     pp (0.6.2)
       prettyprint
@@ -421,6 +422,7 @@ DEPENDENCIES
   omniauth
   omniauth-google-oauth2
   omniauth-rails_csrf_protection
+  pagy (~> 9.3)
   pg (~> 1.1)
   puma (~> 5.0)
   rack-attack
