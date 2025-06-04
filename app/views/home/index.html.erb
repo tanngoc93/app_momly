@@ -79,10 +79,23 @@
   <script>
     function copyShortResult() {
       const input = document.getElementById("shortLinkDisplay");
+      const btn = input.nextElementSibling;
+
       input.select();
       input.setSelectionRange(0, 99999);
-      document.execCommand("copy");
-      alert("Copied to clipboard!");
+      navigator.clipboard.writeText(input.value).then(() => {
+        const originalText = btn.innerText;
+
+        btn.innerText = "Copied!";
+        btn.classList.remove("btn-outline-success");
+        btn.classList.add("btn-success");
+
+        setTimeout(() => {
+          btn.innerText = originalText;
+          btn.classList.add("btn-outline-success");
+          btn.classList.remove("btn-success");
+        }, 1500);
+      });
     }
   </script>
 <% else %>

@@ -62,7 +62,7 @@ class ShortLinksController < ApplicationController
   end
 
   def modal
-    @pagy, @short_links = pagy(current_user.short_links.order(updated_at: :desc), items: 50)
+    @pagy, @short_links = pagy(current_user.short_links.order(updated_at: :desc), items: 20)
     render partial: "short_links/modal_links"
   end
 
