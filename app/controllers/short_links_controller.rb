@@ -39,7 +39,7 @@ class ShortLinksController < ApplicationController
   def destroy
     @short_link = ShortLink.find_by(id: params[:id])
 
-    if false
+    if @short_link&.destroy
       respond_to do |format|
         format.turbo_stream { render turbo_stream: turbo_stream.remove(dom_id(@short_link)) }
         format.html { redirect_back fallback_location: root_path, notice: "Link removed." }
