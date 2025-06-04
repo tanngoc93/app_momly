@@ -17,11 +17,11 @@ gem "turbo-rails"                                        # Hotwire: Turbo
 gem "stimulus-rails"                                     # Hotwire: Stimulus
 gem "jbuilder"                                           # JSON APIs
 gem "bootsnap",                require: false
-gem "tzinfo-data",             platforms: %i[mingw mswin x64_mingw jruby]
 
 # ----------------------------------------
 # Authentication
 # ----------------------------------------
+gem "activeadmin"                                         # Admin panel
 gem "devise"                                              # User auth
 gem "omniauth"                                            # OAuth base
 gem "omniauth-google-oauth2"                              # Google OAuth
@@ -73,3 +73,8 @@ group :test do
   gem "capybara"                                          # Feature tests
   gem "selenium-webdriver"                                # Browser driver
 end
+
+# ----------------------------------------
+# Platform-specific
+# ----------------------------------------
+gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]

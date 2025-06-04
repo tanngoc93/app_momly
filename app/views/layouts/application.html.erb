@@ -58,26 +58,23 @@
           </div>
         </div>
       </div>
+
+      <script>
+        function copyToClipboard(text, btn) {
+          navigator.clipboard.writeText(text).then(() => {
+            const original = btn.innerText;
+            btn.innerText = "Copied!";
+            btn.classList.remove("btn-outline-secondary");
+            btn.classList.add("btn-success");
+
+            setTimeout(() => {
+              btn.innerText = original;
+              btn.classList.add("btn-outline-secondary");
+              btn.classList.remove("btn-success");
+            }, 1500);
+          });
+        }
+      </script>
     <% end %>
-
-    <script>
-      function copyToClipboard(text) {
-        navigator.clipboard.writeText(text).then(() => {
-          alert("Copied to clipboard!");
-        });
-      }
-
-      document.addEventListener("DOMContentLoaded", () => {
-        const modalEl = document.getElementById("myLinksModal");
-        if (!modalEl) return;
-
-        modalEl.addEventListener("show.bs.modal", () => {
-          const frame = document.getElementById("my_links_frame");
-          if (frame) {
-            frame.src = frame.dataset.src; // force reload every open
-          }
-        });
-      });
-    </script>
   </body>
 </html>

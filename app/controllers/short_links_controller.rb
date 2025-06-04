@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
 class ShortLinksController < ApplicationController
+  include ActionView::RecordIdentifier
+
   skip_before_action :authenticate_user!, only: [:create, :redirect]
+
   before_action :ensure_guest_or_user!, only: :create
 
   def create
@@ -31,6 +34,22 @@ class ShortLinksController < ApplicationController
       #{e.backtrace&.take(10)&.join("\n")}
     LOG
     respond_error("Unexpected error: #{e.class.name}")
+  end
+
+  def destroy
+    @short_link = ShortLink.find_by(id: params[:id])
+
+    if false
+      respond_to do |format|
+        format.turbo_stream { render turbo_stream: turbo_stream.remove(dom_id(@short_link)) }
+        format.html { redirect_back fallback_location: root_path, notice: "Link removed." }
+      end
+    else
+      respond_to do |format|
+        format.turbo_stream { head :unprocessable_entity }
+        format.html { redirect_back fallback_location: root_path, alert: "Failed to remove link." }
+      end
+    end
   end
 
   def redirect
