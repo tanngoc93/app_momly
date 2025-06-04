@@ -18,7 +18,11 @@ module Api
         @current_user = User.find_by(api_token: token)
 
         unless @current_user
-          render json: { error: "Unauthorized" }, status: :unauthorized
+          render json: {
+            errors: [
+              { detail: "Unauthorized" }
+            ]
+          }, status: :unauthorized
         end
       end
     end

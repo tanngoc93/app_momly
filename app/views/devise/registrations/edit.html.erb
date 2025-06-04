@@ -61,6 +61,21 @@
                   type="button"
                   onclick="copyApiToken(this)">Copy</button>
         </div>
+
+        <div class="mt-4">
+          <label class="fw-bold mb-2 d-block">Example API Request</label>
+          <div class="position-relative">
+            <pre class="bg-light border rounded-3 p-3 mb-0 text-break overflow-auto"><code id="curlCommand" style="display: block; padding-top: 1.25rem;"><%= raw <<~CURL
+                curl -X POST #{request.base_url}/api/v1/short_links \\
+                  -H "Authorization: Bearer #{resource.api_token}" \\
+                  -H "Content-Type: application/json" \\
+                  -d '{"original_url":"https://example.com/product/abc"}'
+              CURL
+              %></code></pre>
+            <button class="btn btn-sm btn-outline-secondary position-absolute top-0 end-0 m-2" onclick="copyCurlCommand(this)">Copy</button>
+          </div>
+          <small class="text-muted d-block mt-2">Use this token in the Authorization header of your API requests.</small>
+        </div>
       </div>
     </div>
   </div>
@@ -83,4 +98,20 @@
       }, 1500);
     });
   }
+
+  function copyCurlCommand(btn) {
+    const code = document.getElementById("curlCommand").innerText;
+    navigator.clipboard.writeText(code).then(() => {
+      const original = btn.innerText;
+      btn.innerText = "Copied!";
+      btn.classList.remove("btn-outline-secondary");
+      btn.classList.add("btn-success");
+      setTimeout(() => {
+        btn.innerText = original;
+        btn.classList.add("btn-outline-secondary");
+        btn.classList.remove("btn-success");
+      }, 1500);
+    });
+  }
 </script>
+

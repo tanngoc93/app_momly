@@ -15,7 +15,7 @@ module Api
             short_code: short_link.short_code
           }
         }, status: :created
-      rescue ArgumentError, ActiveRecord::RecordInvalid => e
+      rescue => e
         render json: {
           errors: [
             { detail: e.message }
