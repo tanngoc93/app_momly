@@ -2,24 +2,30 @@
   <% if @short_links.any? %>
     <ul class="list-group">
       <% @short_links.each do |link| %>
-        <li id="<%= dom_id(link) %>" class="list-group-item d-flex justify-content-between align-items-center">
-          <div>
+        <li id="<%= dom_id(link) %>" class="list-group-item d-flex justify-content-between align-items-center gap-3">
+          <div class="flex-grow-1">
             <small class="text-muted d-block mb-1">
-              <%= link.original_url.truncate(60) %>
+              <%= link.original_url.truncate(50) %>
             </small>
-            <strong>
-              <%= link_to redirect_short_url(link.short_code), redirect_short_url(link.short_code), target: "_blank" %>
-            </strong>
+
+            <div>
+              <strong class="d-block text-primary">
+                <%= link_to redirect_short_url(link.short_code), redirect_short_url(link.short_code), target: "_blank" %>
+              </strong>
+
+              <small class="text-muted mt-1 d-block" style="font-size: 0.75rem;">
+                <i class="bi bi-bar-chart-fill me-1"></i>
+                <%= pluralize(link.click_count, 'click') %>
+              </small>
+            </div>
           </div>
 
-          <div class="d-flex gap-2">
-            <!-- Copy button -->
+          <div class="d-flex flex-shrink-0 gap-2 align-self-start">
             <button class="btn btn-sm btn-outline-secondary"
                     onclick="copyToClipboard('<%= redirect_short_url(link.short_code) %>', this)">
               Copy
             </button>
 
-            <!-- Remove button -->
             <%= button_to short_link_path(link),
                   method: :delete,
                   data: { turbo_confirm: "Are you sure you want to remove this short link?" },
