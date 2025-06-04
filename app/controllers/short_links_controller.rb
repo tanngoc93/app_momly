@@ -25,6 +25,9 @@ class ShortLinksController < ApplicationController
   rescue URI::InvalidURIError, ArgumentError => e
     respond_error("Invalid URL: #{e.message}")
 
+  rescue ShortLinkServices::BlockedDomainError => e
+    respond_error(e.message)
+
   rescue ShortLinkServices::UnsafeUrlError => e
     respond_error(e.message)
 
