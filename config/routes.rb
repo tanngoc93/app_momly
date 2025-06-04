@@ -4,6 +4,13 @@ Rails.application.routes.draw do
     omniauth_callbacks: 'users/omniauth_callbacks'
   }
 
+  # Route reset API token cho user
+  namespace :users do
+    resource :api_token, only: [] do
+      post :reset
+    end
+  end
+
   # Health check (important for Docker, uptime monitoring, etc.)
   get "/health", to: proc { [200, { "Content-Type" => "text/plain" }, ["OK"]] }
 

@@ -50,7 +50,13 @@
       <hr class="my-4">
 
       <div class="text-start">
-        <label class="fw-bold mb-2 d-block">Your API Token</label>
+        <label class="fw-bold mb-0">Your API Token</label>
+        <%= button_to "🔁 Generate New Token",
+                reset_users_api_token_path,
+                method: :post,
+                form_class: "d-inline",
+                data: { turbo_confirm: "Are you sure you want to generate a new API token?" },
+                class: "btn btn-link fw-bold mb-2 text-danger p-0 text-decoration-none align-baseline" %>
         <div class="input-group input-group-lg">
           <input type="text"
                  id="apiToken"

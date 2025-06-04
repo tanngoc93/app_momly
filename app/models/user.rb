@@ -36,9 +36,21 @@ class User < ApplicationRecord
   end
 
   # == Instance methods ==
+
+  def reset_api_token!
+    update!(api_token: generate_unique_api_token)
+  end
+
   private
 
   def generate_api_token
-    self.api_token = SecureRandom.hex(20)
+    self.api_token = generate_unique_api_token
+  end
+
+  def generate_unique_api_token
+    loop do
+      token = SecureRandom.hex(20)
+      break token unless self.class.exists?(api_token: token)
+    end
   end
 end
