@@ -6,7 +6,8 @@ module Api
       def create
         short_link = ShortLinkServices::Create.new(
           user: current_user,
-          original_url: params[:original_url]
+          original_url: params[:original_url],
+          source: :api
         ).call
 
         render json: {

@@ -36,11 +36,11 @@ class User < ApplicationRecord
   end
 
   # == Instance methods ==
-
   def reset_api_token!
     update!(api_token: generate_unique_api_token)
   end
 
+  # == Private Methods ==
   private
 
   def generate_api_token

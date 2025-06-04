@@ -7,9 +7,10 @@ module ShortLinkServices
   class Create
     MOMLY_DOMAINS = %w[momly.me www.momly.me].freeze
 
-    def initialize(user:, original_url:)
+    def initialize(user:, original_url:, source: :web)
       @user = user
       @original_url = original_url
+      @source = source
     end
 
     # Main entrypoint to create a short link
@@ -68,8 +69,9 @@ module ShortLinkServices
       return existing_link if existing_link
 
       ShortLink.create!(
+        user: @user,
         original_url: url,
-        user: @user
+        source: @source
       )
     end
   end
