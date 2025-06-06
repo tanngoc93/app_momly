@@ -1,24 +1,66 @@
-# README
+# Momly
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Momly is a lightweight link shortener built with [Ruby on Rails](https://rubyonrails.org/). It lets you generate clean short URLs, manage them from a simple interface and integrate via a small JSON API.
 
-Things you may want to cover:
+## Features
 
-* Ruby version
+- Shorten any URL with a six character code
+- Optional account system using Devise and Google OAuth
+- Keep track of click counts and last accessed time
+- Guest mode for quick use without sign up
+- Links are validated with Google Safe Browsing
+- REST API secured with personal API tokens
+- Rate limiting for guest requests and sign‑ups via Rack::Attack
 
-* System dependencies
+## Requirements
 
-* Configuration
+- Ruby 3.1.2
+- PostgreSQL
+- Redis (for the Docker setup)
 
-* Database creation
+## Getting started
 
-* Database initialization
+### Local setup
 
-* How to run the test suite
+```bash
+bin/setup
+bin/rails server
+```
 
-* Services (job queues, cache servers, search engines, etc.)
+The app will be available at `http://localhost:3000`.
 
-* Deployment instructions
+### Docker
 
-* ...
+A sample compose file is provided. Copy it and start the services:
+
+```bash
+cp docker-compose.yml.sample docker-compose.yml
+# edit environment variables as needed
+docker compose up
+```
+
+This exposes the app on port `3001`.
+
+### API usage
+
+Authenticate using the `api_token` of your user and POST to `/api/v1/short_links`:
+
+```bash
+curl -H "Authorization: Bearer YOUR_TOKEN" \
+     -d "original_url=https://example.com" \
+     http://localhost:3000/api/v1/short_links
+```
+
+The response includes the generated `short_url` and `short_code`.
+
+## Tests
+
+Run all tests with:
+
+```bash
+bin/rails test
+```
+
+## License
+
+All rights reserved.
