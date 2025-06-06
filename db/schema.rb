@@ -31,8 +31,9 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_04_101332) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "last_accessed_at"
-    t.index ["short_code"], name: "index_short_links_on_short_code"
+    t.index ["short_code"], name: "index_short_links_on_short_code", unique: true
     t.index ["user_id"], name: "index_short_links_on_user_id"
+    t.index ["user_id", "original_url"], name: "index_short_links_on_user_and_original_url"
   end
 
   create_table "users", force: :cascade do |t|
