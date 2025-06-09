@@ -18,7 +18,7 @@ Rails.application.routes.draw do
   root "home#index"
 
   # Short link management (HTML form + Turbo Stream support)
-  resources :short_links, only: [:index, :create, :destroy] do
+  resources :short_links, only: [:create, :destroy] do
     member do
       get :stats
     end
