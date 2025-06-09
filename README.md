@@ -7,10 +7,12 @@ Momly is a lightweight link shortener built with [Ruby on Rails](https://rubyonr
 - Shorten any URL with a six character code
 - Optional account system using Devise and Google OAuth
 - Keep track of click counts and last accessed time
+- Detailed click analytics with IP, referrer and user agent
 - Guest mode for quick use without sign up
 - Links are validated with Google Safe Browsing
 - REST API secured with personal API tokens
 - Rate limiting for guest requests and sign‑ups via Rack::Attack
+- Dashboard to view aggregated click metrics
 
 ## Requirements
 
@@ -53,6 +55,8 @@ curl -H "Authorization: Bearer YOUR_TOKEN" \
 
 The response includes the generated `short_url` and `short_code`.
 
+To view analytics for a link, send a GET request to `/api/v1/short_links/:id/stats`.
+
 ## Scheduled tasks
 
 Expired guest links are cleaned up daily using the `whenever` gem. The
@@ -62,6 +66,13 @@ After deploying, refresh the crontab with:
 ```bash
 bin/rake schedule:update_crontab
 ```
+
+## Privacy
+
+Each redirect stores the visitor IP address, referrer and user agent for
+analytics purposes. This data is used only to generate aggregated statistics
+and is never shared with third parties. Delete your short link if you no longer
+want this information collected.
 
 ## Tests
 
