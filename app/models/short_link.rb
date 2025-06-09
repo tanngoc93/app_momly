@@ -15,6 +15,7 @@ class ShortLink < ApplicationRecord
 
   # == Scopes ==
   scope :publicly_visible, -> { where(publicly_visible: true) }
+  scope :guest_links, -> { where(user_id: nil) }
 
   # == Callbacks ==
   before_validation :generate_short_code, on: :create
