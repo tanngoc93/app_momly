@@ -16,9 +16,6 @@ class ShortLinksController < ApplicationController
   rescue_from ShortLinkServices::UnsafeUrlError, with: :respond_error
   rescue_from StandardError, with: :handle_unexpected_error
 
-  def index
-    @short_links = ShortLink.order(created_at: :desc).limit(100)
-  end
 
   def create
     @short_link = ShortLinkServices::Create.new(

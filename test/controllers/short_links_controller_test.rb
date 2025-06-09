@@ -72,10 +72,4 @@ class ShortLinksControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "index shows latest guest links" do
-    ShortLink.create!(original_url: "https://example.com", short_code: "abc123")
-    get short_links_url
-    assert_response :success
-    assert_match "abc123", @response.body
-  end
 end
