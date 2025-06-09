@@ -61,7 +61,32 @@ curl -H "Authorization: Bearer YOUR_TOKEN" \
 
 The response includes the generated `short_url` and `short_code`.
 
+Additional endpoints are available:
+
+```bash
+# List all links
+curl -H "Authorization: Bearer YOUR_TOKEN" \
+     http://localhost:3000/api/v1/short_links
+
+# Retrieve a single link
+curl -H "Authorization: Bearer YOUR_TOKEN" \
+     http://localhost:3000/api/v1/short_links/1
+
+# Update a link
+curl -X PATCH -H "Authorization: Bearer YOUR_TOKEN" \
+     -d "original_url=https://new.example.com" \
+     http://localhost:3000/api/v1/short_links/1
+
+# Delete a link
+curl -X DELETE -H "Authorization: Bearer YOUR_TOKEN" \
+     http://localhost:3000/api/v1/short_links/1
+```
+
+`index` and `show` return JSON data describing the short link(s). `update` returns the updated record while `destroy` responds with a `204 No Content` status.
+
+
 To view analytics for a link, send a GET request to `/api/v1/short_links/:id/stats`.
+
 
 ## Scheduled tasks
 

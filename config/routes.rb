@@ -31,7 +31,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       # POST /api/v1/short_links
-      resources :short_links, only: [:create] do
+      resources :short_links, only: [:create, :index, :show, :update, :destroy] do
         get :stats, on: :member
       end
     end
