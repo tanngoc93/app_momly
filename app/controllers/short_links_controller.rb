@@ -17,7 +17,7 @@ class ShortLinksController < ApplicationController
   rescue_from StandardError, with: :handle_unexpected_error
 
   def index
-    @short_links = ShortLink.where(user_id: nil).order(created_at: :desc).limit(100)
+    @short_links = ShortLink.order(created_at: :desc).limit(100)
   end
 
   def create

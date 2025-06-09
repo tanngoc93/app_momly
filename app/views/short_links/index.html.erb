@@ -1,5 +1,8 @@
 <div class="container py-5" style="max-width: 960px;">
-  <h1 class="fw-bold text-center mb-4">🔥 Latest 100 Guest Links</h1>
+  <h1 class="fw-bold text-center text-light mb-1">🔥 Latest 100 Guest Links</h1>
+  <p class="text-center text-light small mb-4">
+    These are the most recent public links created by guests using Momly.
+  </p>
 
   <% if @short_links.any? %>
     <ul class="list-group">
@@ -13,15 +16,18 @@
 <script nonce="<%= content_security_policy_nonce %>">
   function copyToClipboard(text, btn) {
     navigator.clipboard.writeText(text).then(() => {
-      const original = btn.innerText;
-      btn.innerText = "Copied!";
-      btn.classList.remove("btn-outline-secondary");
+      const icon = btn.querySelector("i");
+      const original = btn.innerHTML;
+      btn.innerHTML = '<i class="bi bi-check-circle me-1"></i> Copied!';
+      btn.classList.remove("btn-outline-primary");
       btn.classList.add("btn-success");
       setTimeout(() => {
-        btn.innerText = original;
-        btn.classList.add("btn-outline-secondary");
+        btn.innerHTML = original;
+        btn.classList.add("btn-outline-primary");
         btn.classList.remove("btn-success");
       }, 1500);
+    }).catch(err => {
+      alert("Copy failed: " + err);
     });
   }
 </script>
