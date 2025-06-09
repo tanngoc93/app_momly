@@ -102,7 +102,17 @@ class ShortLinksController < ApplicationController
 
     verifier = ActiveSupport::MessageVerifier.new(Rails.application.secret_key_base)
     data = verifier.verify(token)
-    data.is_a?(Hash) && (data["guest_mode"] == true || data[:guest_mode] == true)
+    return false unless data.is_a?(Hash)
+
+    guest_mode = data["guest_mode"] == true || data[:guest_mode] == true
+    issued_at = data["issued_at"] || data[:issued_at]
+
+    return false unless guest_mode && issued_at.present?
+
+    issued_time = Time.at(issued_at.to_i)
+    within_window = issued_time <= Time.current && (Time.current - issued_time) <= 30.minutes
+
+    within_window
   rescue ActiveSupport::MessageVerifier::InvalidSignature, StandardError
     false
   end

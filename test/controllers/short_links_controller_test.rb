@@ -14,11 +14,31 @@ class ShortLinksControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "guest can create with valid token" do
-    token = @verifier.generate(guest_mode: true)
+    issued_at = Time.current
+    token = @verifier.generate(
+      guest_mode: true,
+      issued_at: issued_at.to_i,
+      expires_at: (issued_at + 30.minutes).to_i
+    )
     GoogleSafeBrowsingService.stub(:safe_url?, true) do
       assert_difference("ShortLink.count", 1) do
         post short_links_url, params: { short_link: { original_url: "https://example.com" }, guest_token: token }
       end
+    end
+  end
+
+  test "guest cannot create with expired token" do
+    issued_at = 31.minutes.ago
+    token = @verifier.generate(
+      guest_mode: true,
+      issued_at: issued_at.to_i,
+      expires_at: (issued_at + 30.minutes).to_i
+    )
+    GoogleSafeBrowsingService.stub(:safe_url?, true) do
+      assert_no_difference("ShortLink.count") do
+        post short_links_url, params: { short_link: { original_url: "https://example.com" }, guest_token: token }
+      end
+      assert_response :forbidden
     end
   end
 
