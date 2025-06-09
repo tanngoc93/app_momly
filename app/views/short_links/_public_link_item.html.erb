@@ -1,0 +1,27 @@
+<li id="<%= dom_id(link) %>" class="list-group-item d-flex justify-content-between align-items-center gap-3">
+  <div class="flex-grow-1">
+    <small class="text-muted d-block mb-1"><%= link.original_url.truncate(25) %></small>
+    <div>
+      <strong class="d-block text-primary">
+        <%= link_to redirect_short_url(link.short_code), redirect_short_url(link.short_code), target: "_blank" %>
+      </strong>
+      <div class="d-flex gap-3 mt-1 align-items-center" style="font-size: 0.75rem;">
+        <span class="text-muted">
+          <i class="bi bi-bar-chart-fill me-1"></i>
+          <%= pluralize(link.click_count, 'click') %>
+        </span>
+        <span class="text-muted">
+          <i class="bi bi-box-arrow-in-up-right me-1"></i>
+          <%= link.created_via.titleize %>
+        </span>
+        <span class="text-muted" data-controller="tooltip" data-bs-toggle="tooltip" data-bs-title="Created at <%= link.created_at.strftime('%Y-%m-%d %H:%M') %>" style="cursor: help;">
+          <i class="bi bi-clock-history me-1"></i>
+          <%= link.days_alive.zero? ? 'Today' : "#{link.days_alive}d" %>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="d-flex flex-shrink-0 gap-2 align-self-start">
+    <button class="btn btn-sm btn-outline-secondary" onclick="copyToClipboard('<%= redirect_short_url(link.short_code) %>', this)">Copy</button>
+  </div>
+</li>
