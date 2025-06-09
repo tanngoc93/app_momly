@@ -68,7 +68,7 @@ group :development do
   gem "letter_opener"                                     # Open emails in browser
   gem "letter_opener_web"                                 # Web UI for above
   gem "web-console"                                       # Rails console in browser
-  gem "whenever", require: false                          # Cron scheduler
+  gem "whenever", "~> 0.9.4"
 end
 
 group :test do
