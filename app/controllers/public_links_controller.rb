@@ -4,8 +4,7 @@ class PublicLinksController < ApplicationController
   skip_before_action :authenticate_user!, only: [:index]
 
   def index
-    @short_links = ShortLink.guest_links
-                           .publicly_visible
+    @short_links = ShortLink.publicly_visible
                            .order(created_at: :desc)
                            .limit(100)
   end
