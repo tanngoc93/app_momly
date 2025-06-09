@@ -5,7 +5,7 @@
         <p class="mb-2 fw-semibold text-success">✅ Your short link:</p>
         <div class="d-flex flex-column flex-md-row align-items-stretch gap-2" data-controller="clipboard">
           <input type="text" class="form-control bg-white border-success" value="<%= redirect_short_url(@short_link.short_code) %>" id="shortLinkDisplay" readonly data-clipboard-target="source">
-          <button class="btn btn-outline-success fw-semibold" data-action="clipboard#copy">Copy</button>
+          <button class="btn btn-outline-success fw-semibold" data-action="click->clipboard#copy">Copy</button>
         </div>
       </div>
     </template>
