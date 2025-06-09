@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 module ShortLinkServices
-  class UnsafeUrlError < StandardError; end
-  class BlockedDomainError < StandardError; end
 
   class Create
 
