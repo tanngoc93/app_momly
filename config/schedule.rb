@@ -7,3 +7,8 @@ set :output, 'log/cron.log'
 every 1.day, at: '2:00 am' do
   runner 'CleanupExpiredGuestLinksJob.perform_later'
 end
+
+# Remove old click analytics once per day
+every 1.day, at: '3:00 am' do
+  runner 'CleanupOldShortLinkClicksJob.perform_later'
+end
