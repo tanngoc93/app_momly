@@ -53,6 +53,16 @@ curl -H "Authorization: Bearer YOUR_TOKEN" \
 
 The response includes the generated `short_url` and `short_code`.
 
+## Scheduled tasks
+
+Expired guest links are cleaned up daily using the `whenever` gem. The
+cron job enqueues `CleanupExpiredGuestLinksJob` every day at 2&nbsp;AM.
+After deploying, refresh the crontab with:
+
+```bash
+bin/rake schedule:update_crontab
+```
+
 ## Tests
 
 Run all tests with:
