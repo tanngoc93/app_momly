@@ -1,6 +1,7 @@
 class ShortLink < ApplicationRecord
   # == Associations ==
   belongs_to :user, optional: true
+  has_many :short_link_clicks, dependent: :destroy
 
   # == Enums ==
   enum source: {
