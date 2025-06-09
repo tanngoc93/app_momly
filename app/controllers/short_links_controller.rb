@@ -16,7 +16,6 @@ class ShortLinksController < ApplicationController
   rescue_from ShortLinkServices::UnsafeUrlError, with: :respond_error
   rescue_from StandardError, with: :handle_unexpected_error
 
-
   def create
     @short_link = ShortLinkServices::Create.new(
       user: current_user,
