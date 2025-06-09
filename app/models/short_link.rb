@@ -13,6 +13,9 @@ class ShortLink < ApplicationRecord
   validates :original_url, presence: true, format: URI::regexp(%w[http https])
   validates :short_code, presence: true, uniqueness: true
 
+  # == Scopes ==
+  scope :publicly_visible, -> { where(publicly_visible: true) }
+
   # == Callbacks ==
   before_validation :generate_short_code, on: :create
 

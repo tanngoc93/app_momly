@@ -24,6 +24,9 @@ Rails.application.routes.draw do
     end
   end
 
+  # Public listing of recent short links
+  get "/public_links", to: "public_links#index", as: :public_links
+
   #
   get "/my_links_modal", to: "short_links#modal", as: :my_links_modal
 

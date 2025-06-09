@@ -27,6 +27,19 @@ class ShortLinksControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "guest can hide link from public" do
+    issued_at = Time.current
+    token = @verifier.generate(
+      guest_mode: true,
+      issued_at: issued_at.to_i,
+      expires_at: (issued_at + 30.minutes).to_i
+    )
+    GoogleSafeBrowsingService.stub(:safe_url?, true) do
+      post short_links_url, params: { short_link: { original_url: "https://example.com", publicly_visible: "0" }, guest_token: token }
+    end
+    assert_equal false, ShortLink.last.publicly_visible
+  end
+
   test "guest cannot create with expired token" do
     issued_at = 31.minutes.ago
     token = @verifier.generate(
