@@ -1,0 +1,21 @@
+<h2>Click Stats for <%= @short_link.short_code %></h2>
+
+<h3>Clicks by Date</h3>
+<table class="table">
+  <thead><tr><th>Date</th><th>Count</th></tr></thead>
+  <tbody>
+  <% @clicks_by_date.each do |date, count| %>
+    <tr><td><%= date %></td><td><%= count %></td></tr>
+  <% end %>
+  </tbody>
+</table>
+
+<h3>Clicks by IP</h3>
+<table class="table">
+  <thead><tr><th>IP</th><th>Count</th></tr></thead>
+  <tbody>
+  <% @clicks_by_ip.each do |ip, count| %>
+    <tr><td><%= ip.presence || 'Unknown' %></td><td><%= count %></td></tr>
+  <% end %>
+  </tbody>
+</table>

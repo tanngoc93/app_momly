@@ -18,7 +18,11 @@ Rails.application.routes.draw do
   root "home#index"
 
   # Short link management (HTML form + Turbo Stream support)
-  resources :short_links, only: [:index, :create, :destroy]
+  resources :short_links, only: [:index, :create, :destroy] do
+    member do
+      get :stats
+    end
+  end
 
   #
   get "/my_links_modal", to: "short_links#modal", as: :my_links_modal
@@ -27,7 +31,9 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       # POST /api/v1/short_links
-      resources :short_links, only: [:create]
+      resources :short_links, only: [:create] do
+        get :stats, on: :member
+      end
     end
   end
 
