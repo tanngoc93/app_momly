@@ -19,7 +19,9 @@ Rails.application.configure do
 
   # Generate session nonces for permitted importmap and inline scripts
   config.content_security_policy_nonce_generator = ->(request) { request.session.id.to_s }
-  config.content_security_policy_nonce_directives = %w(script-src style-src)
+  # Include nonces for scripts but allow inline styles without requiring a nonce
+  # so that `style="..."` attributes in the views continue to work.
+  config.content_security_policy_nonce_directives = %w(script-src)
 
   # Report violations without enforcing the policy.
   # config.content_security_policy_report_only = true
