@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_06_04_101332) do
+ActiveRecord::Schema[7.0].define(version: 2025_06_05_000000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -18,6 +18,17 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_04_101332) do
     t.string "version"
     t.integer "runtime"
     t.datetime "migrated_on", precision: nil
+  end
+
+  create_table "short_link_clicks", force: :cascade do |t|
+    t.bigint "short_link_id", null: false
+    t.string "ip"
+    t.string "referrer"
+    t.string "user_agent"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_at"], name: "index_short_link_clicks_on_created_at"
+    t.index ["short_link_id"], name: "index_short_link_clicks_on_short_link_id"
   end
 
   create_table "short_links", force: :cascade do |t|
@@ -31,9 +42,13 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_04_101332) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "last_accessed_at"
-    t.index ["short_code"], name: "index_short_links_on_short_code", unique: true
-    t.index ["user_id"], name: "index_short_links_on_user_id"
+    t.boolean "publicly_visible", default: true, null: false
+    t.index ["short_code"], name: "index_short_links_on_short_code"
+    t.index ["short_code"], name: "index_short_links_on_short_code_unique", unique: true
     t.index ["user_id", "original_url"], name: "index_short_links_on_user_and_original_url"
+    t.index ["user_id"], name: "index_short_links_on_user_id"
+    t.index ["publicly_visible"], name: "index_short_links_on_publicly_visible"
+
   end
 
   create_table "users", force: :cascade do |t|
@@ -65,5 +80,6 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_04_101332) do
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
+  add_foreign_key "short_link_clicks", "short_links"
   add_foreign_key "short_links", "users"
 end

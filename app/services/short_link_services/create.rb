@@ -1,15 +1,13 @@
 # frozen_string_literal: true
 
 module ShortLinkServices
-  class UnsafeUrlError < StandardError; end
-  class BlockedDomainError < StandardError; end
 
   class Create
-    MOMLY_DOMAINS = %w[momly.me www.momly.me].freeze
 
-    def initialize(user:, original_url:, source: :web)
+    def initialize(user:, original_url:, publicly_visible: true, source: :web)
       @user = user
       @original_url = original_url
+      @publicly_visible = publicly_visible
       @source = source
     end
 
@@ -59,7 +57,8 @@ module ShortLinkServices
     def own_domain?(url)
       uri = URI.parse(url)
       host = uri.host.to_s.downcase
-      MOMLY_DOMAINS.any? { |domain| host == domain || host.end_with?(".#{domain}") }
+      domains = Rails.application.config.momly_domains
+      domains.any? { |domain| host == domain || host.end_with?(".#{domain}") }
     end
 
     # Returns existing short link for user if already exists
@@ -71,6 +70,7 @@ module ShortLinkServices
       ShortLink.create!(
         user: @user,
         original_url: url,
+        publicly_visible: @publicly_visible,
         source: @source
       )
     end

@@ -1,6 +1,7 @@
 class ShortLink < ApplicationRecord
   # == Associations ==
   belongs_to :user, optional: true
+  has_many :short_link_clicks, dependent: :destroy
 
   # == Enums ==
   enum source: {
@@ -11,6 +12,9 @@ class ShortLink < ApplicationRecord
   # == Validations ==
   validates :original_url, presence: true, format: URI::regexp(%w[http https])
   validates :short_code, presence: true, uniqueness: true
+
+  # == Scopes ==
+  scope :publicly_visible, -> { where(publicly_visible: true) }
 
   # == Callbacks ==
   before_validation :generate_short_code, on: :create
