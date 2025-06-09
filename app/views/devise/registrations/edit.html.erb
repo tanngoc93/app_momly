@@ -57,67 +57,37 @@
                 form_class: "d-inline",
                 data: { turbo_confirm: "Are you sure you want to generate a new API token?" },
                 class: "btn btn-link fw-bold mb-2 text-danger p-0 text-decoration-none align-baseline" %>
-        <div class="input-group input-group-lg">
+        <div class="input-group input-group-lg" data-controller="clipboard">
           <input type="text"
                  id="apiToken"
                  class="form-control font-monospace"
                  value="<%= resource.api_token %>"
-                 readonly>
+                 readonly
+                 data-clipboard-target="source">
           <button class="btn btn-outline-secondary"
                   type="button"
-                  onclick="copyApiToken(this)">Copy</button>
+                  data-action="clipboard#copy">Copy</button>
         </div>
 
         <div class="mt-4">
           <label class="fw-bold mb-2 d-block">Example API Request</label>
-          <div class="position-relative">
-            <pre class="bg-light border rounded-3 p-3 mb-0 text-break overflow-auto"><code id="curlCommand" style="display: block; padding-top: 1.25rem;"><%= raw <<~CURL
+          <div class="position-relative" data-controller="clipboard">
+            <pre class="bg-light border rounded-3 p-3 mb-0 text-break overflow-auto"><code id="curlCommand" data-clipboard-target="source" style="display: block; padding-top: 1.25rem;"><%= raw <<~CURL
                 curl -X POST #{request.base_url}/api/v1/short_links \\
                   -H "Authorization: Bearer #{resource.api_token}" \\
                   -H "Content-Type: application/json" \\
                   -d '{"original_url":"https://example.com/product/abc"}'
               CURL
               %></code></pre>
-            <button class="btn btn-sm btn-outline-secondary position-absolute top-0 end-0 m-2" onclick="copyCurlCommand(this)">Copy</button>
+            <button class="btn btn-sm btn-outline-secondary position-absolute top-0 end-0 m-2"
+                    data-action="clipboard#copy">Copy</button>
           </div>
           <small class="text-muted d-block mt-2">Use this token in the Authorization header of your API requests.</small>
         </div>
       </div>
     </div>
   </div>
+
+<!-- JavaScript moved to Stimulus controllers -->
 </div>
-
-<script nonce="<%= content_security_policy_nonce %>">
-  function copyApiToken(btn) {
-    const input = document.getElementById("apiToken");
-    input.select();
-    input.setSelectionRange(0, 99999);
-    navigator.clipboard.writeText(input.value).then(() => {
-      const original = btn.innerText;
-      btn.innerText = "Copied!";
-      btn.classList.remove("btn-outline-secondary");
-      btn.classList.add("btn-success");
-      setTimeout(() => {
-        btn.innerText = original;
-        btn.classList.add("btn-outline-secondary");
-        btn.classList.remove("btn-success");
-      }, 1500);
-    });
-  }
-
-  function copyCurlCommand(btn) {
-    const code = document.getElementById("curlCommand").innerText;
-    navigator.clipboard.writeText(code).then(() => {
-      const original = btn.innerText;
-      btn.innerText = "Copied!";
-      btn.classList.remove("btn-outline-secondary");
-      btn.classList.add("btn-success");
-      setTimeout(() => {
-        btn.innerText = original;
-        btn.classList.add("btn-outline-secondary");
-        btn.classList.remove("btn-success");
-      }, 1500);
-    });
-  }
-</script>
 

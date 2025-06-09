@@ -78,28 +78,7 @@
     </div>
   </div>
 
-  <script nonce="<%= content_security_policy_nonce %>">
-    function copyShortResult() {
-      const input = document.getElementById("shortLinkDisplay");
-      const btn = input.nextElementSibling;
-
-      input.select();
-      input.setSelectionRange(0, 99999);
-      navigator.clipboard.writeText(input.value).then(() => {
-        const originalText = btn.innerText;
-
-        btn.innerText = "Copied!";
-        btn.classList.remove("btn-outline-success");
-        btn.classList.add("btn-success");
-
-        setTimeout(() => {
-          btn.innerText = originalText;
-          btn.classList.add("btn-outline-success");
-          btn.classList.remove("btn-success");
-        }, 1500);
-      });
-    }
-  </script>
+  <!-- JavaScript moved to Stimulus controllers -->
 <% else %>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');

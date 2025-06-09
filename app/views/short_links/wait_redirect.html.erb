@@ -1,20 +1,11 @@
-<div class="redirect-container">
+<div class="redirect-container"
+     data-controller="redirect"
+     data-redirect-url-value="<%= @short_link.original_url %>"
+     data-redirect-seconds-value="5">
   <h1>Redirecting...</h1>
-  <p>You will be redirected in <span id="countdown">3</span> seconds.</p>
+  <p>You will be redirected in <span data-redirect-target="countdown">3</span> seconds.</p>
   <p>If it doesn’t happen automatically, <a href="<%= @short_link.original_url %>">click here</a>.</p>
-  <button class="redirect-button" onclick="window.location.href='<%= j @short_link.original_url %>'">Go Now</button>
+  <button class="redirect-button" data-action="redirect#goto">Go Now</button>
 </div>
 
-<script nonce="<%= content_security_policy_nonce %>">
-  let seconds = 5;
-  const countdown = document.getElementById("countdown");
-
-  const timer = setInterval(() => {
-    seconds--;
-    countdown.textContent = seconds;
-    if (seconds <= 0) {
-      clearInterval(timer);
-      window.location.href = "<%= j @short_link.original_url %>";
-    }
-  }, 1000);
-</script>
+<!-- JavaScript moved to Stimulus controller -->
