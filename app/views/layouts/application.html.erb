@@ -62,7 +62,7 @@
         </div>
       </div>
 
-      <script>
+      <script nonce="<%= content_security_policy_nonce %>">
         function copyToClipboard(text, btn) {
           navigator.clipboard.writeText(text).then(() => {
             const original = btn.innerText;
