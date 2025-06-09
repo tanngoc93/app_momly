@@ -5,7 +5,6 @@ module ShortLinkServices
   class BlockedDomainError < StandardError; end
 
   class Create
-    MOMLY_DOMAINS = %w[momly.me www.momly.me].freeze
 
     def initialize(user:, original_url:, source: :web)
       @user = user
@@ -59,7 +58,8 @@ module ShortLinkServices
     def own_domain?(url)
       uri = URI.parse(url)
       host = uri.host.to_s.downcase
-      MOMLY_DOMAINS.any? { |domain| host == domain || host.end_with?(".#{domain}") }
+      domains = Rails.application.config.momly_domains
+      domains.any? { |domain| host == domain || host.end_with?(".#{domain}") }
     end
 
     # Returns existing short link for user if already exists

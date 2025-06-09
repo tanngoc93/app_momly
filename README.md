@@ -41,6 +41,12 @@ docker compose up
 
 This exposes the app on port `3001`.
 
+### Environment variables
+
+The app reads `MOMLY_DOMAINS` to determine which domains should not be
+shortened. Provide a comma‑separated list of domains. The default is
+`momly.me,www.momly.me`.
+
 ### API usage
 
 Authenticate using the `api_token` of your user and POST to `/api/v1/short_links`:
