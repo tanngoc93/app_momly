@@ -26,8 +26,8 @@ Rails.application.routes.draw do
   # API namespace for versioned endpoints
   namespace :api do
     namespace :v1 do
-      # POST /api/v1/short_links
-      resources :short_links, only: [:create]
+      # REST API for short links
+      resources :short_links, only: [:create, :index, :show, :update, :destroy]
     end
   end
 
