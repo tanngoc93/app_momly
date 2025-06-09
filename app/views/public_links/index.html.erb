@@ -12,22 +12,3 @@
     <div class="text-center text-muted py-5">No public links found.</div>
   <% end %>
 </div>
-
-<script nonce="<%= content_security_policy_nonce %>">
-  function copyToClipboard(text, btn) {
-    navigator.clipboard.writeText(text).then(() => {
-      const icon = btn.querySelector("i");
-      const original = btn.innerHTML;
-      btn.innerHTML = '<i class="bi bi-check-circle me-1"></i> Copied!';
-      btn.classList.remove("btn-outline-primary");
-      btn.classList.add("btn-success");
-      setTimeout(() => {
-        btn.innerHTML = original;
-        btn.classList.add("btn-outline-primary");
-        btn.classList.remove("btn-success");
-      }, 1500);
-    }).catch(err => {
-      alert("Copy failed: " + err);
-    });
-  }
-</script>

@@ -38,7 +38,9 @@
 
           <div class="d-flex flex-shrink-0 gap-2 align-self-start">
             <button class="btn btn-sm btn-outline-secondary"
-                    onclick="copyToClipboard('<%= redirect_short_url(link.short_code) %>', this)">
+                    data-controller="clipboard"
+                    data-action="clipboard#copy"
+                    data-clipboard-text="<%= redirect_short_url(link.short_code) %>">
               Copy
             </button>
 
