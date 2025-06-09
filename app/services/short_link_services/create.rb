@@ -4,7 +4,7 @@ module ShortLinkServices
 
   class Create
 
-    def initialize(user:, original_url:, publicly_visible: true, source: :web)
+    def initialize(user:, original_url:, publicly_visible: false, source: :web)
       @user = user
       @original_url = original_url
       @publicly_visible = publicly_visible
