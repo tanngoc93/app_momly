@@ -4,9 +4,17 @@ class ShortLinksController < ApplicationController
   include ActionView::RecordIdentifier
   include Pagy::Backend
 
-  skip_before_action :authenticate_user!, only: [:create, :redirect]
+  skip_before_action :authenticate_user!, only: %i[create redirect]
 
   before_action :ensure_guest_or_user!, only: :create
+  before_action :set_short_link, only: %i[destroy redirect stats]
+
+  rescue_from ActiveRecord::RecordInvalid, with: :handle_record_invalid
+  rescue_from ActiveRecord::RecordNotFound, with: :handle_record_not_found
+  rescue_from URI::InvalidURIError, ArgumentError, with: :handle_invalid_url
+  rescue_from ShortLinkServices::BlockedDomainError, with: :respond_error
+  rescue_from ShortLinkServices::UnsafeUrlError, with: :respond_error
+  rescue_from StandardError, with: :handle_unexpected_error
 
   def create
     @short_link = ShortLinkServices::Create.new(
@@ -15,35 +23,10 @@ class ShortLinksController < ApplicationController
     ).call
 
     respond_success("Link shortened!")
-
-  rescue ActiveRecord::RecordInvalid => e
-    respond_error(e.record.errors.full_messages.join(', '))
-
-  rescue ActiveRecord::RecordNotFound => e
-    respond_error("Record not found: #{e.message}")
-
-  rescue URI::InvalidURIError, ArgumentError => e
-    respond_error("Invalid URL: #{e.message}")
-
-  rescue ShortLinkServices::BlockedDomainError => e
-    respond_error(e.message)
-
-  rescue ShortLinkServices::UnsafeUrlError => e
-    respond_error(e.message)
-
-  rescue => e
-    Rails.logger.error <<~LOG
-      [ShortLinksController#create] Unexpected error:
-      #{e.class} - #{e.message}
-      #{e.backtrace&.take(10)&.join("\n")}
-    LOG
-    respond_error("Unexpected error: #{e.class.name}")
   end
 
   def destroy
-    @short_link = ShortLink.find_by(id: params[:id])
-
-    if @short_link&.destroy
+    if @short_link.destroy
       respond_to do |format|
         format.turbo_stream { render turbo_stream: turbo_stream.remove(dom_id(@short_link)) }
         format.html { redirect_back fallback_location: root_path, notice: "Link removed." }
@@ -57,20 +40,12 @@ class ShortLinksController < ApplicationController
   end
 
   def redirect
-    @short_link = ShortLink.find_by!(short_code: params[:short_code])
-    @short_link.increment!(:click_count)
-    @short_link.update_column(:last_accessed_at, Time.current)
-    @short_link.short_link_clicks.create(
-      ip: request.remote_ip,
-      referrer: request.referrer,
-      user_agent: request.user_agent
-    )
+    track_click
 
     render :wait_redirect, layout: "minimal"
   end
 
   def stats
-    @short_link = current_user.short_links.find(params[:id])
     @clicks_by_date = @short_link.short_link_clicks.group("DATE(created_at)").count
     @clicks_by_ip = @short_link.short_link_clicks.group(:ip).count
 
@@ -131,5 +106,44 @@ class ShortLinksController < ApplicationController
       format.turbo_stream
       format.html { redirect_to root_path, alert: message }
     end
+  end
+
+  def handle_record_invalid(exception)
+    respond_error(exception.record.errors.full_messages.join(', '))
+  end
+
+  def handle_record_not_found(exception)
+    respond_error("Record not found: #{exception.message}")
+  end
+
+  def handle_invalid_url(exception)
+    respond_error("Invalid URL: #{exception.message}")
+  end
+
+  def handle_unexpected_error(exception)
+    Rails.logger.error <<~LOG
+      [ShortLinksController] Unexpected error:
+      #{exception.class} - #{exception.message}
+      #{exception.backtrace&.take(10)&.join("\n")}
+    LOG
+    respond_error("Unexpected error: #{exception.class.name}")
+  end
+
+  def set_short_link
+    @short_link = if action_name == 'redirect'
+                    ShortLink.find_by!(short_code: params[:short_code])
+                  else
+                    current_user.short_links.find(params[:id])
+                  end
+  end
+
+  def track_click
+    @short_link.increment!(:click_count)
+    @short_link.update_column(:last_accessed_at, Time.current)
+    @short_link.short_link_clicks.create(
+      ip: request.remote_ip,
+      referrer: request.referrer,
+      user_agent: request.user_agent
+    )
   end
 end
