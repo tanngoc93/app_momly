@@ -92,6 +92,9 @@ To view analytics for a link, send a GET request to `/api/v1/short_links/:id/sta
 
 Expired guest links are cleaned up daily using the `whenever` gem. The
 cron job enqueues `CleanupExpiredGuestLinksJob` every day at 2&nbsp;AM.
+Old click analytics are removed with `CleanupOldShortLinkClicksJob` at
+3&nbsp;AM. The retention period defaults to 90&nbsp;days and can be adjusted
+using the `SHORT_LINK_CLICK_RETENTION_DAYS` environment variable.
 After deploying, refresh the crontab with:
 
 ```bash
