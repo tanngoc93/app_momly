@@ -78,7 +78,7 @@
     </div>
   </div>
 
-  <script>
+  <script nonce="<%= content_security_policy_nonce %>">
     function copyShortResult() {
       const input = document.getElementById("shortLinkDisplay");
       const btn = input.nextElementSibling;

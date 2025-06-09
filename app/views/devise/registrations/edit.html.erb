@@ -87,7 +87,7 @@
   </div>
 </div>
 
-<script>
+<script nonce="<%= content_security_policy_nonce %>">
   function copyApiToken(btn) {
     const input = document.getElementById("apiToken");
     input.select();
