@@ -6,7 +6,10 @@ export default class extends Controller {
   static values = { text: String }
 
   copy(event) {
-    if (event) event.preventDefault()
+    if (event) {
+      if (event.defaultPrevented) return
+      event.preventDefault()
+    }
     let text = this.textValue
     if (!text && this.hasSourceTarget) {
       text = $(this.sourceTarget).val() || $(this.sourceTarget).text()
