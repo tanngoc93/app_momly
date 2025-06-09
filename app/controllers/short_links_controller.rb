@@ -4,7 +4,7 @@ class ShortLinksController < ApplicationController
   include ActionView::RecordIdentifier
   include Pagy::Backend
 
-  skip_before_action :authenticate_user!, only: %i[create redirect]
+  skip_before_action :authenticate_user!, only: %i[index create redirect]
 
   before_action :ensure_guest_or_user!, only: :create
   before_action :set_short_link, only: %i[destroy redirect stats]
@@ -15,6 +15,10 @@ class ShortLinksController < ApplicationController
   rescue_from ShortLinkServices::BlockedDomainError, with: :respond_error
   rescue_from ShortLinkServices::UnsafeUrlError, with: :respond_error
   rescue_from StandardError, with: :handle_unexpected_error
+
+  def index
+    @short_links = ShortLink.where(user_id: nil).order(created_at: :desc).limit(100)
+  end
 
   def create
     @short_link = ShortLinkServices::Create.new(
