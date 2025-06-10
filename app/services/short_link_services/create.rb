@@ -9,7 +9,7 @@ module ShortLinkServices
     def initialize(user:, original_url:, publicly_visible: false, source: :web)
       @user = user
       @original_url = original_url
-      @publicly_visible = publicly_visible || false
+      @publicly_visible = publicly_visible
       @source = source
     end
 
