@@ -1,4 +1,4 @@
-FROM ruby:3.1.2-slim
+FROM ruby:3.2.3-slim
 
 ARG ARG_RAILS_MASTER_KEY
 
