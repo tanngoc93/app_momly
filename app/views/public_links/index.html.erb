@@ -1,37 +1,14 @@
-<style>
-  body {
-    background-color: #00193A;
-    font-family: 'Helvetica Neue', sans-serif;
-  }
-  .public-links {
-    max-width: 960px;
-  }
-</style>
+<div class="container py-5" style="max-width: 960px;">
+  <h1 class="fw-bold text-center text-light mb-1">🔥 Latest 100 Guest Links</h1>
+  <p class="text-center text-light small mb-4">
+    These are the most recent public links created by guests using Momly.
+  </p>
 
-<div class="container py-5 public-links">
-  <h1 class="text-white fw-bold mb-4 text-center">Latest Public Links</h1>
-  <div class="table-responsive bg-white rounded-3 shadow-sm">
-    <table class="table table-hover mb-0">
-      <thead class="table-light">
-        <tr>
-          <th scope="col">Short URL</th>
-          <th scope="col">Original URL</th>
-          <th scope="col">Clicks</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @short_links.each do |link| %>
-          <tr>
-            <td>
-              <%= link_to redirect_short_url(link.short_code), redirect_short_url(link.short_code), target: "_blank" %>
-            </td>
-            <td class="text-break">
-              <%= link_to link.original_url, link.original_url, target: "_blank", rel: "noopener" %>
-            </td>
-            <td><%= link.click_count %></td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-  </div>
+  <% if @short_links.any? %>
+    <ul class="list-group">
+      <%= render partial: "public_link_item", collection: @short_links, as: :link %>
+    </ul>
+  <% else %>
+    <div class="text-center text-light py-5">No public links found.</div>
+  <% end %>
 </div>
