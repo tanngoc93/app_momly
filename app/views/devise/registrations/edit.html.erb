@@ -57,6 +57,7 @@
                 form_class: "d-inline",
                 data: { turbo_confirm: "Are you sure you want to generate a new API token?" },
                 class: "btn btn-link fw-bold mb-2 text-danger p-0 text-decoration-none align-baseline" %>
+
         <div class="input-group input-group-lg" data-controller="clipboard">
           <input type="text"
                  id="apiToken"
@@ -65,29 +66,48 @@
                  readonly
                  data-clipboard-target="source">
           <button class="btn btn-outline-secondary"
+                  style="min-width: 100px;"
                   type="button"
-                  data-action="clipboard#copy">Copy</button>
+                  data-action="clipboard#copy">
+            <span class="clipboard-label">Copy</span>
+          </button>
         </div>
 
         <div class="mt-4">
           <label class="fw-bold mb-2 d-block">Example API Request</label>
-          <div class="position-relative" data-controller="clipboard">
-            <pre class="bg-light border rounded-3 p-3 mb-0 text-break overflow-auto"><code id="curlCommand" data-clipboard-target="source" style="display: block; padding-top: 1.25rem;"><%= raw <<~CURL
-                curl -X POST #{request.base_url}/api/v1/short_links \\
-                  -H "Authorization: Bearer #{resource.api_token}" \\
-                  -H "Content-Type: application/json" \\
-                  -d '{"original_url":"https://example.com/product/abc"}'
-              CURL
-              %></code></pre>
+          <div class="position-relative">
+            <pre class="bg-light border rounded-3 p-3 mb-0 text-break overflow-auto">
+              <code id="curlCommand"
+                    class="clipboard-source"
+                    style="display: block; padding-top: 1.25rem;"><%= raw <<~CURL
+                      curl -X POST #{request.base_url}/api/v1/short_links \\
+                        -H "Authorization: Bearer #{resource.api_token}" \\
+                        -H "Content-Type: application/json" \\
+                        -d '{"original_url":"https://example.com/product/abc"}'
+                    CURL
+                  %></code>
+            </pre>
+
             <button class="btn btn-sm btn-outline-secondary position-absolute top-0 end-0 m-2"
-                    data-action="clipboard#copy">Copy</button>
+                    style="min-width: 100px;"
+                    data-controller="clipboard"
+                    data-action="clipboard#copy"
+                    data-clipboard-text="<%= j raw <<~CURL
+                      curl -X POST #{request.base_url}/api/v1/short_links \\
+                        -H \\"Authorization: Bearer #{resource.api_token}\\" \\
+                        -H \\"Content-Type: application/json\\" \\
+                        -d '{\"original_url\":\"https://example.com/product/abc\"}'
+                    CURL
+                    %>">
+              <span class="clipboard-label">Copy</span>
+            </button>
           </div>
-          <small class="text-muted d-block mt-2">Use this token in the Authorization header of your API requests.</small>
+
+          <small class="text-muted d-block mt-2">
+            Use this token in the Authorization header of your API requests.
+          </small>
         </div>
       </div>
     </div>
   </div>
-
-<!-- JavaScript moved to Stimulus controllers -->
 </div>
-

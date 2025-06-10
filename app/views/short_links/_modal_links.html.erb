@@ -41,7 +41,7 @@
                     data-controller="clipboard"
                     data-action="clipboard#copy"
                     data-clipboard-text="<%= redirect_short_url(link.short_code) %>">
-              Copy
+              <span class="clipboard-label">Copy</span>
             </button>
 
             <%= button_to short_link_path(link),
