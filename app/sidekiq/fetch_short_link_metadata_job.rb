@@ -1,5 +1,7 @@
-class FetchShortLinkMetadataJob < ApplicationJob
-  queue_as :default
+class FetchShortLinkMetadataJob
+  include Sidekiq::Job
+
+  sidekiq_options queue: 'default', tags: ['fetch_short_link_metadata'], retry: 3, dead: true
 
   def perform(short_link_id)
     short_link = ShortLink.find_by(id: short_link_id)
