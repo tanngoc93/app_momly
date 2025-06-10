@@ -3,11 +3,14 @@
 require 'sidekiq'
 require 'sidekiq/web'
 
-# Define your Redis URL
+# Define your Redis URL and namespace. The namespace helps
+# isolate Sidekiq jobs if multiple applications share the
+# same Redis server.
 REDIS_URL = ENV.fetch('REDIS_URL', 'redis://localhost:6379')
+REDIS_NAMESPACE = ENV.fetch('REDIS_NAMESPACE', 'momly_sidekiq')
 
 Sidekiq.configure_server do |config|
-  config.redis = { url: REDIS_URL }
+  config.redis = { url: REDIS_URL, namespace: REDIS_NAMESPACE }
 
   # Create a logger writing to 'sidekiq.log' with rolling settings
   sidekiq_logger = ActiveSupport::Logger.new(
@@ -27,5 +30,5 @@ Sidekiq.configure_server do |config|
 end
 
 Sidekiq.configure_client do |config|
-  config.redis = { url: REDIS_URL }
+  config.redis = { url: REDIS_URL, namespace: REDIS_NAMESPACE }
 end

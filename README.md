@@ -50,11 +50,18 @@ Start the Sidekiq worker in another terminal:
 docker compose run --rm momly_backend /bin/sh .dockerdev/commander/sidekiq.sh
 ```
 
+The script now explicitly loads the Rails environment so Sidekiq
+has access to all application classes.
+
 ### Environment variables
 
 The app reads `MOMLY_DOMAINS` to determine which domains should not be
 shortened. Provide a comma‑separated list of domains. The default is
 `momly.me,www.momly.me`.
+
+Sidekiq connects to Redis using `REDIS_URL`. When multiple apps share the
+same Redis server, set `REDIS_NAMESPACE` to a unique value so each app's
+jobs are isolated.
 
 ### API usage
 
