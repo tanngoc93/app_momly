@@ -2,6 +2,7 @@
 :logfile: ./log/sidekiq.log
 :concurrency: 5
 :queues:
+  - important
   - default
 
 development:
