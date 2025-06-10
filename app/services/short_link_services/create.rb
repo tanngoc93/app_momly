@@ -72,7 +72,7 @@ module ShortLinkServices
       short_link = ShortLink.create!(
         user: @user,
         original_url: url,
-        publicly_visible: @publicly_visible,
+        publicly_visible: @publicly_visible || false,
         source: @source
       )
 
