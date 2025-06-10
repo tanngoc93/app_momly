@@ -1,7 +1,4 @@
 class ShortLink < ApplicationRecord
-  # == Attributes ==
-  attribute :publicly_visible, :boolean, default: false
-
   # == Associations ==
   belongs_to :user, optional: true
   has_many :short_link_clicks, dependent: :destroy
