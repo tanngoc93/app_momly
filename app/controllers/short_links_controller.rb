@@ -11,7 +11,8 @@ class ShortLinksController < ApplicationController
   def create
     @short_link = ShortLinkServices::Create.new(
       user: current_user,
-      original_url: short_link_params[:original_url]
+      original_url: short_link_params[:original_url],
+      publicly_visible: ActiveModel::Type::Boolean.new.cast(short_link_params[:publicly_visible])
     ).call
 
     respond_success("Link shortened!")

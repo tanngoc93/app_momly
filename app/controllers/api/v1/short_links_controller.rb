@@ -28,6 +28,7 @@ module Api
         short_link = ShortLinkServices::Create.new(
           user: current_user,
           original_url: params[:original_url],
+          publicly_visible: ActiveModel::Type::Boolean.new.cast(params[:publicly_visible]),
           source: :api
         ).call
 

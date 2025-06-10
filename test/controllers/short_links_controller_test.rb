@@ -44,6 +44,22 @@ class ShortLinksControllerTest < ActionDispatch::IntegrationTest
     assert_equal false, ShortLink.last.publicly_visible
   end
 
+  test "guest can make link public" do
+    issued_at = Time.current
+    token = @verifier.generate(
+      guest_mode: true,
+      issued_at: issued_at.to_i,
+      expires_at: (issued_at + 30.minutes).to_i
+    )
+    GoogleSafeBrowsingService.stub(:safe_url?, true) do
+      PageMetadataFetcher.stub(:fetch, { title: "t", description: "d" }) do
+        post short_links_url,
+             params: { short_link: { original_url: "https://example.com", publicly_visible: "1" }, guest_token: token }
+      end
+    end
+    assert_equal true, ShortLink.last.publicly_visible
+  end
+
   test "guest link defaults to hidden" do
     issued_at = Time.current
     token = @verifier.generate(
