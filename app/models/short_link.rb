@@ -1,4 +1,7 @@
 class ShortLink < ApplicationRecord
+  # == Attributes ==
+  attribute :publicly_visible, :boolean, default: false
+
   # == Associations ==
   belongs_to :user, optional: true
   has_many :short_link_clicks, dependent: :destroy
@@ -19,6 +22,7 @@ class ShortLink < ApplicationRecord
 
   # == Callbacks ==
   before_validation :generate_short_code, on: :create
+  after_create_commit :enqueue_metadata_job
 
   # == Instance methods ==
   def created_via
@@ -39,5 +43,9 @@ class ShortLink < ApplicationRecord
       code = SecureRandom.alphanumeric(6).downcase
       break code unless ShortLink.exists?(short_code: code)
     end
+  end
+
+  def enqueue_metadata_job
+    FetchShortLinkMetadataJob.perform_later(self.id)
   end
 end

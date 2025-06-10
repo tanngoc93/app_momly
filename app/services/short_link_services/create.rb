@@ -9,7 +9,7 @@ module ShortLinkServices
     def initialize(user:, original_url:, publicly_visible: false, source: :web)
       @user = user
       @original_url = original_url
-      @publicly_visible = publicly_visible
+      @publicly_visible = publicly_visible || false
       @source = source
     end
 
@@ -75,7 +75,7 @@ module ShortLinkServices
         publicly_visible: @publicly_visible,
         source: @source
       )
-      FetchShortLinkMetadataJob.perform_later(short_link.id)
+
       short_link
     end
   end
