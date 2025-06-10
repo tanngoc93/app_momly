@@ -451,8 +451,5 @@ DEPENDENCIES
   web-console
   whenever (~> 0.9.4)
 
-RUBY VERSION
-   ruby 3.2.3p157
-
 BUNDLED WITH
    2.6.9
