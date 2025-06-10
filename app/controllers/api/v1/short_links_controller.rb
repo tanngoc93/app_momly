@@ -29,11 +29,11 @@ module Api
             short_code: short_link.short_code
           }
         }, status: :created
-      rescue => e
+      rescue ShortLinkServices::BlockedDomainError,
+             ShortLinkServices::UnsafeUrlError,
+             URI::InvalidURIError, ArgumentError => e
         render json: {
-          errors: [
-            { detail: e.message }
-          ]
+          errors: [ { detail: e.message } ]
         }, status: :unprocessable_entity
       end
 
@@ -48,6 +48,12 @@ module Api
             errors: short_link.errors.full_messages.map { |m| { detail: m } }
           }, status: :unprocessable_entity
         end
+      rescue ShortLinkServices::BlockedDomainError,
+             ShortLinkServices::UnsafeUrlError,
+             URI::InvalidURIError, ArgumentError => e
+        render json: {
+          errors: [ { detail: e.message } ]
+        }, status: :unprocessable_entity
       end
 
       def destroy

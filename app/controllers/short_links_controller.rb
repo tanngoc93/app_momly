@@ -100,7 +100,8 @@ class ShortLinksController < ApplicationController
     end
   end
 
-  def respond_error(message)
+  def respond_error(error)
+    message = error.respond_to?(:message) ? error.message : error.to_s
     @error_message = message
 
     respond_to do |format|
