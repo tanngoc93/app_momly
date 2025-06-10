@@ -21,6 +21,6 @@ bundle check || (
 echo "[INFO] Starting Sidekiq with environment: $RAILS_ENV"
 # Explicitly require the Rails environment to ensure all
 # constants and autoload paths are loaded correctly.
-bundle exec sidekiq -C config/sidekiq.yml -e "$RAILS_ENV" -r ./config/environment
+bundle exec sidekiq -C config/sidekiq.yml -e "$RAILS_ENV"
 
 exec "$@"
