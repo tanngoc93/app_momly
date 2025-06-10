@@ -3,7 +3,7 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "3.1.2"
+ruby "3.2.3"
 
 # ----------------------------------------
 # Core Framework & Runtime
@@ -37,6 +37,7 @@ gem "pagy",                    "~> 9.3"                    # Pagination
 # External APIs & Security
 # ----------------------------------------
 gem "faraday"                                             # HTTP client
+gem "nokogiri"                                           # HTML parsing
 gem "rack-attack"                                         # Rate limiter
 gem "google-api-client"                                   # Google API SDK
 gem "recaptcha"                                           # Google reCAPTCHA

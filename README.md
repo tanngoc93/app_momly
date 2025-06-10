@@ -8,6 +8,7 @@ Momly is a lightweight link shortener built with [Ruby on Rails](https://rubyonr
 - Optional account system using Devise and Google OAuth
 - Keep track of click counts and last accessed time
 - Detailed click analytics with IP, referrer and user agent
+- Stores page title and description for each link
 - Guest mode for quick use without sign up
 - Links are validated with Google Safe Browsing
 - REST API secured with personal API tokens
@@ -16,7 +17,7 @@ Momly is a lightweight link shortener built with [Ruby on Rails](https://rubyonr
 
 ## Requirements
 
-- Ruby 3.1.2
+- Ruby 3.2.3
 - PostgreSQL
 - Redis (for the Docker setup)
 

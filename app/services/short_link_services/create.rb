@@ -69,11 +69,14 @@ module ShortLinkServices
       existing_link = ShortLink.where(user_id: @user&.id).find_by(original_url: url)
       return existing_link if existing_link
 
+      metadata = PageMetadataFetcher.fetch(url)
       ShortLink.create!(
         user: @user,
         original_url: url,
         publicly_visible: @publicly_visible,
-        source: @source
+        source: @source,
+        page_title: metadata[:title],
+        meta_description: metadata[:description]
       )
     end
   end
