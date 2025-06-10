@@ -2,7 +2,6 @@
 
 class ShortLinksController < ApplicationController
   include ActionView::RecordIdentifier
-  include Pagy::Backend
 
   skip_before_action :authenticate_user!, only: %i[index create redirect]
 
