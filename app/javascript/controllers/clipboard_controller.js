@@ -1,5 +1,4 @@
 import { Controller } from "@hotwired/stimulus"
-import $ from "jquery"
 
 export default class extends Controller {
   static targets = ["source", "label"]
@@ -9,34 +8,31 @@ export default class extends Controller {
     if (event?.defaultPrevented) return
     event?.preventDefault()
 
-    const $btn = $(event?.currentTarget || this.element)
-    const $label = $btn.find(".clipboard-label")
+    const btn = event?.currentTarget || this.element
+    const label = btn.querySelector(".clipboard-label")
 
-    // Ưu tiên theo thứ tự: textValue > data-clipboard-text > sourceTarget
     let text = this.textValue?.trim()
     if (!text) {
-      text = this.element.dataset.clipboardText
+      text = btn.dataset.clipboardText || this.element.dataset.clipboardText
     }
     if (!text && this.hasSourceTarget) {
-      text = $(this.sourceTarget).val() || $(this.sourceTarget).text()
+      text = this.sourceTarget.value || this.sourceTarget.textContent
     }
-    if (!text) return
+    if (!text || !navigator.clipboard) return
 
     navigator.clipboard.writeText(text).then(() => {
-      const original = $label.data("original") || $label.text()
-      $label.data("original", original)
+      const original = label.dataset.original || label.textContent
+      label.dataset.original = original
 
-      $label.text("Copied!")
-      $btn.addClass("btn-success")
-      $btn.removeClass("btn-outline-secondary btn-outline-primary btn-outline-success")
+      label.textContent = "Copied!"
+      btn.classList.add("btn-success")
+      btn.classList.remove("btn-outline-secondary", "btn-outline-primary", "btn-outline-success")
 
       setTimeout(() => {
-        $label.text(original)
-        $btn.removeClass("btn-success")
-        $btn.addClass("btn-outline-secondary")
+        label.textContent = original
+        btn.classList.remove("btn-success")
+        btn.classList.add("btn-outline-secondary")
       }, 1500)
-    }).catch(err => {
-      alert(`Copy failed: ${err}`)
-    })
+    }).catch(err => console.error(`Copy failed: ${err}`))
   }
 }
