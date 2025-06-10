@@ -62,6 +62,7 @@ services:
     depends_on:
       - momly_psql
       - momly_redis
+      - momly_sidekiq
     networks:
       - bridge-network
     healthcheck:
