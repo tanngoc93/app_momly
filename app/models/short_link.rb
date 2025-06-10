@@ -46,6 +46,6 @@ class ShortLink < ApplicationRecord
   end
 
   def enqueue_metadata_job
-    FetchShortLinkMetadataJob.perform_later(self.id)
+    FetchShortLinkMetadataJob.perform_async(self.id)
   end
 end

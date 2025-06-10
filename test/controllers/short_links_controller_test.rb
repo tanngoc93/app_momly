@@ -21,7 +21,7 @@ class ShortLinksControllerTest < ActionDispatch::IntegrationTest
       expires_at: (issued_at + 30.minutes).to_i
     )
     GoogleSafeBrowsingService.stub(:safe_url?, true) do
-      FetchShortLinkMetadataJob.stub(:perform_later, nil) do
+      FetchShortLinkMetadataJob.stub(:perform_async, nil) do
         assert_difference("ShortLink.count", 1) do
           post short_links_url, params: { short_link: { original_url: "https://example.com" }, guest_token: token }
         end
@@ -37,7 +37,7 @@ class ShortLinksControllerTest < ActionDispatch::IntegrationTest
       expires_at: (issued_at + 30.minutes).to_i
     )
     GoogleSafeBrowsingService.stub(:safe_url?, true) do
-      FetchShortLinkMetadataJob.stub(:perform_later, nil) do
+      FetchShortLinkMetadataJob.stub(:perform_async, nil) do
         post short_links_url, params: { short_link: { original_url: "https://example.com", publicly_visible: "0" }, guest_token: token }
       end
     end
@@ -52,7 +52,7 @@ class ShortLinksControllerTest < ActionDispatch::IntegrationTest
       expires_at: (issued_at + 30.minutes).to_i
     )
     GoogleSafeBrowsingService.stub(:safe_url?, true) do
-      FetchShortLinkMetadataJob.stub(:perform_later, nil) do
+      FetchShortLinkMetadataJob.stub(:perform_async, nil) do
         post short_links_url,
              params: { short_link: { original_url: "https://example.com", publicly_visible: "1" }, guest_token: token }
       end
@@ -68,7 +68,7 @@ class ShortLinksControllerTest < ActionDispatch::IntegrationTest
       expires_at: (issued_at + 30.minutes).to_i
     )
     GoogleSafeBrowsingService.stub(:safe_url?, true) do
-      FetchShortLinkMetadataJob.stub(:perform_later, nil) do
+      FetchShortLinkMetadataJob.stub(:perform_async, nil) do
         post short_links_url, params: { short_link: { original_url: "https://example.com" }, guest_token: token }
       end
     end
@@ -93,7 +93,7 @@ class ShortLinksControllerTest < ActionDispatch::IntegrationTest
   test "authenticated user can create" do
     sign_in @user
     GoogleSafeBrowsingService.stub(:safe_url?, true) do
-      FetchShortLinkMetadataJob.stub(:perform_later, nil) do
+      FetchShortLinkMetadataJob.stub(:perform_async, nil) do
         assert_difference("ShortLink.count", 1) do
           post short_links_url, params: { short_link: { original_url: "https://example.com" } }
         end
