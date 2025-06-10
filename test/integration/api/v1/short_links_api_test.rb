@@ -15,6 +15,9 @@ class ApiV1ShortLinksApiTest < ActionDispatch::IntegrationTest
 
     body = JSON.parse(@response.body)
     assert_equal 2, body['data'].length
+    assert_equal 1, body['pagy']['page']
+    assert body['pagy']['pages'] >= 1
+    assert_equal 2, body['pagy']['count']
   end
 
   test 'show returns short link' do
