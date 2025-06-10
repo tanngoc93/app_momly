@@ -92,13 +92,13 @@
                     style="min-width: 100px;"
                     data-controller="clipboard"
                     data-action="clipboard#copy"
-                    data-clipboard-text="<%= j raw <<~CURL
-                      curl -X POST #{request.base_url}/api/v1/short_links \\
-                        -H \\"Authorization: Bearer #{resource.api_token}\\" \\
-                        -H \\"Content-Type: application/json\\" \\
-                        -d '{\"original_url\":\"https://example.com/product/abc\"}'
+                    data-clipboard-text="<%= h <<~CURL %>
+                      curl -X POST #{request.base_url}/api/v1/short_links \
+                        -H "Authorization: Bearer #{resource.api_token}" \
+                        -H "Content-Type: application/json" \
+                        -d '{"original_url":"https://example.com/product/abc"}'
                     CURL
-                    %>">
+                    ">
               <span class="clipboard-label">Copy</span>
             </button>
           </div>
