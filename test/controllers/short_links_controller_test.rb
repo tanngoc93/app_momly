@@ -21,8 +21,10 @@ class ShortLinksControllerTest < ActionDispatch::IntegrationTest
       expires_at: (issued_at + 30.minutes).to_i
     )
     GoogleSafeBrowsingService.stub(:safe_url?, true) do
-      assert_difference("ShortLink.count", 1) do
-        post short_links_url, params: { short_link: { original_url: "https://example.com" }, guest_token: token }
+      PageMetadataFetcher.stub(:fetch, { title: "t", description: "d" }) do
+        assert_difference("ShortLink.count", 1) do
+          post short_links_url, params: { short_link: { original_url: "https://example.com" }, guest_token: token }
+        end
       end
     end
   end
@@ -35,7 +37,9 @@ class ShortLinksControllerTest < ActionDispatch::IntegrationTest
       expires_at: (issued_at + 30.minutes).to_i
     )
     GoogleSafeBrowsingService.stub(:safe_url?, true) do
-      post short_links_url, params: { short_link: { original_url: "https://example.com", publicly_visible: "0" }, guest_token: token }
+      PageMetadataFetcher.stub(:fetch, { title: "t", description: "d" }) do
+        post short_links_url, params: { short_link: { original_url: "https://example.com", publicly_visible: "0" }, guest_token: token }
+      end
     end
     assert_equal false, ShortLink.last.publicly_visible
   end
@@ -48,7 +52,9 @@ class ShortLinksControllerTest < ActionDispatch::IntegrationTest
       expires_at: (issued_at + 30.minutes).to_i
     )
     GoogleSafeBrowsingService.stub(:safe_url?, true) do
-      post short_links_url, params: { short_link: { original_url: "https://example.com" }, guest_token: token }
+      PageMetadataFetcher.stub(:fetch, { title: "t", description: "d" }) do
+        post short_links_url, params: { short_link: { original_url: "https://example.com" }, guest_token: token }
+      end
     end
     assert_equal false, ShortLink.last.publicly_visible
   end
@@ -71,8 +77,10 @@ class ShortLinksControllerTest < ActionDispatch::IntegrationTest
   test "authenticated user can create" do
     sign_in @user
     GoogleSafeBrowsingService.stub(:safe_url?, true) do
-      assert_difference("ShortLink.count", 1) do
-        post short_links_url, params: { short_link: { original_url: "https://example.com" } }
+      PageMetadataFetcher.stub(:fetch, { title: "t", description: "d" }) do
+        assert_difference("ShortLink.count", 1) do
+          post short_links_url, params: { short_link: { original_url: "https://example.com" } }
+        end
       end
     end
   end

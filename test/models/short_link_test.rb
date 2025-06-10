@@ -35,4 +35,10 @@ class ShortLinkTest < ActiveSupport::TestCase
       assert_equal "def456", link.short_code
     end
   end
+
+  test "can store page metadata" do
+    link = ShortLink.create!(original_url: "https://example.com", page_title: "Title", meta_description: "Desc")
+    assert_equal "Title", link.page_title
+    assert_equal "Desc", link.meta_description
+  end
 end

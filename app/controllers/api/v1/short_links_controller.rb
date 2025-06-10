@@ -4,9 +4,17 @@ module Api
   module V1
     class ShortLinksController < ApiController
       def index
-        short_links = current_user.short_links.order(created_at: :desc)
+        @pagy, short_links = pagy(current_user.short_links.order(created_at: :desc))
 
-        render json: { data: short_links.map { |link| serialized_link(link) } }
+        render json: {
+          data: short_links.map { |link| serialized_link(link) },
+          pagy: {
+            page: @pagy.page,
+            items: @pagy.items,
+            pages: @pagy.pages,
+            count: @pagy.count
+          }
+        }
       end
 
       def show
