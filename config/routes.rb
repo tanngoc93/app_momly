@@ -1,3 +1,10 @@
+require 'sidekiq/web'
+
+Sidekiq::Web.use Rack::Auth::Basic do |username, password|
+  ActiveSupport::SecurityUtils.secure_compare(username, 'tanngoc93') &
+    ActiveSupport::SecurityUtils.secure_compare(password, 'tanngoc93@password')
+end
+
 Rails.application.routes.draw do
   devise_for :users, controllers: {
     registrations: 'users/registrations',
@@ -39,6 +46,9 @@ Rails.application.routes.draw do
       end
     end
   end
+
+  # Sidekiq Web UI
+  mount Sidekiq::Web => '/sidekiq'
 
   # Dynamic short link redirection
   # Must be placed at the bottom to avoid route collision
