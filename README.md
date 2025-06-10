@@ -44,6 +44,12 @@ docker compose up
 
 This exposes the app on port `3001`.
 
+Start the Sidekiq worker in another terminal:
+
+```bash
+docker compose run --rm momly_backend /bin/sh .dockerdev/commander/sidekiq.sh
+```
+
 ### Environment variables
 
 The app reads `MOMLY_DOMAINS` to determine which domains should not be

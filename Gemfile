@@ -45,7 +45,7 @@ gem "recaptcha"                                           # Google reCAPTCHA
 # ----------------------------------------
 # Background Jobs (optional)
 # ----------------------------------------
-# gem "sidekiq"
+gem "sidekiq"
 
 # ----------------------------------------
 # File uploads / Cloud (optional)

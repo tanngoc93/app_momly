@@ -70,6 +70,31 @@ services:
       timeout: 10s
       retries: 3
 
+  momly_sidekiq:
+    tty: true
+    stdin_open: true
+    build:
+      context: .
+      dockerfile: ./.dockerdev/Dockerfile.dev
+    working_dir: /app
+    volumes:
+      - .:/app
+      - bundle_cache:/bundle
+    environment:
+      RAILS_ENV: development
+      BUNDLE_PATH: /bundle
+      DATABASE_HOST: momly_psql
+      DATABASE_PORT: 5432
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: postgres
+      REDIS_URL: redis://momly_redis:6379
+    command: /bin/sh ".dockerdev/commander/sidekiq.sh"
+    depends_on:
+      - momly_psql
+      - momly_redis
+    networks:
+      - bridge-network
+
 networks:
   bridge-network:
 
