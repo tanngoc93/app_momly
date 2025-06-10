@@ -1,0 +1,6 @@
+.form-switch .form-check-input {
+  transform: scale(1.3);
+  transform-origin: left center;
+  cursor: pointer;
+}
+
