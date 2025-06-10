@@ -12,13 +12,8 @@ ENV PORT=3000 \
 
 RUN apt-get update -qq && \
     apt-get install -yq --no-install-recommends \
-      curl \
-      gnupg2 \
-      git \
-      less \
       build-essential \
-      libpq-dev \
-      libvips-dev && \
+      libpq-dev && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR $APP_DIR
