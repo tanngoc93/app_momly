@@ -2,42 +2,49 @@ FROM ruby:3.2.3-slim
 
 ARG ARG_RAILS_MASTER_KEY
 
-ENV PORT=3000 \
+ENV RAILS_ENV=production \
     RAILS_MASTER_KEY=$ARG_RAILS_MASTER_KEY \
-    RAILS_ENV=production \
     BUNDLE_PATH=/bundle \
+    BUNDLE_JOBS=4 \
+    BUNDLE_RETRY=3 \
+    BUNDLE_APP_CONFIG=.bundle \
     APP_DIR=/app \
     RAILS_SERVE_STATIC_FILES=true \
-    DEBIAN_FRONTEND=noninteractive
+    RAILS_LOG_TO_STDOUT=true \
+    LANG=C.UTF-8 \
+    DEBIAN_FRONTEND=noninteractive \
+    PORT=3000
 
+# Install necessary packages
 RUN apt-get update -qq && \
     apt-get install -yq --no-install-recommends \
-      curl \
-      gnupg2 \
-      git \
-      less \
       build-essential \
       libpq-dev \
-      libvips-dev && \
-    rm -rf /var/lib/apt/lists/*
+      curl \
+      git && \
+    # Node.js & Yarn for asset precompilation
+    curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs && \
+    npm install -g yarn && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 WORKDIR $APP_DIR
 
+# Copy only Gemfile for layer caching
 COPY Gemfile Gemfile.lock ./
 
-ENV LANG=C.UTF-8 \
-    BUNDLE_JOBS=4 \
-    BUNDLE_RETRY=3 \
-    BUNDLE_APP_CONFIG=.bundle
-
+# Install production gems
 RUN gem update --system && \
     gem install bundler && \
     bundle config set --local without 'development test' && \
-    bundle install
+    bundle install --jobs 4 --retry 3
 
-COPY . ./
+# Copy the rest of the app
+COPY . .
 
-RUN RAILS_ENV=production bundle exec rails assets:precompile
+# Precompile assets
+RUN bundle exec rails assets:precompile
 
 EXPOSE $PORT
 

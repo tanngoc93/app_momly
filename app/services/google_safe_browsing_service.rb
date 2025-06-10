@@ -31,6 +31,8 @@ class GoogleSafeBrowsingService
   # Checks if the URL is blacklisted by Google Safe Browsing
   # for threats like malware, phishing, and unwanted software.
   def self.blacklisted_by_google?(url)
+    return false if Rails.env.development?
+
     response = Faraday.post("#{API_URL}?key=#{API_KEY}") do |req|
       req.headers['Content-Type'] = 'application/json'
       req.body = {

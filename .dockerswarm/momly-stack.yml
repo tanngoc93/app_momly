@@ -12,7 +12,7 @@ services:
     image: tanngoc93/app_momly:latest
     working_dir: /app
     volumes:
-      - "/root/momly/logs:/app/log"
+      # - "/root/momly/logs:/app/log"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
     environment:
       # Rails & App
@@ -68,3 +68,48 @@ services:
     networks:
       - private-network
       - public-network
+
+  momly_sidekiq:
+    image: tanngoc93/app_momly:latest
+    working_dir: /app
+    volumes:
+      # - "/root/momly/logs:/app/log"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    environment:
+      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY_MOMLY}
+      DATABASE_POOL: ${DATABASE_POOL}
+      DATABASE_HOST: ${DATABASE_HOST}
+      DATABASE_PORT: ${DATABASE_PORT}
+      DATABASE_USER: ${POSTGRES_USER}
+      DATABASE_PASSWORD: ${POSTGRES_PASSWORD}
+      DATABASE_PRODUCTION: ${DATABASE_PRODUCTION_MOMLY}
+      REDIS_URL: ${REDIS_URL}
+      RAILS_ENV: ${RAILS_ENV}
+      PORT: ${RAILS_PORT}
+      #
+      GOOGLE_APP_ID: ${GOOGLE_APP_ID_MOMLY}
+      GOOGLE_APP_SECRET: ${GOOGLE_APP_SECRET_MOMLY}
+      #
+      RECAPTCHA_SITE_KEY: ${RECAPTCHA_SITE_KEY_MOMLY}
+      RECAPTCHA_SECRET_KEY: ${RECAPTCHA_SECRET_KEY_MOMLY}
+      GOOGLE_SAFE_BROWSING_API_KEY: ${GOOGLE_SAFE_BROWSING_API_KEY_MOMLY}
+    command: /bin/sh "/app/.dockerdev/commander/sidekiq.sh"
+    deploy:
+      mode: replicated
+      replicas: 1
+      labels:
+        - "traefik.enable=false"
+        - "traefik.docker.network=private-network"
+      update_config:
+        parallelism: 1
+        delay: 60s
+        failure_action: rollback
+        monitor: 10s
+        order: start-first
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+    stop_grace_period: 30s
+    networks:
+      - private-network

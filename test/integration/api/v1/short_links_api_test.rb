@@ -44,4 +44,13 @@ class ApiV1ShortLinksApiTest < ActionDispatch::IntegrationTest
 
     assert_nil ShortLink.find_by(id: @link.id)
   end
+
+  test 'create respects publicly_visible param' do
+    post '/api/v1/short_links',
+         params: { original_url: 'https://visible.example.com', publicly_visible: '1' },
+         headers: { 'Authorization' => "Bearer #{@token}" }
+    assert_response :created
+
+    assert_equal true, ShortLink.last.publicly_visible
+  end
 end
