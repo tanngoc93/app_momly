@@ -29,11 +29,11 @@ module Api
             short_code: short_link.short_code
           }
         }, status: :created
-      rescue ShortLinkServices::BlockedDomainError,
-             ShortLinkServices::UnsafeUrlError,
-             URI::InvalidURIError, ArgumentError => e
+      rescue => e
         render json: {
-          errors: [ { detail: e.message } ]
+          errors: [
+            { detail: e.message }
+          ]
         }, status: :unprocessable_entity
       end
 
