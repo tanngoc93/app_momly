@@ -12,15 +12,15 @@ export default class extends Controller {
     const $btn = $(event?.currentTarget || this.element)
     const $label = $btn.find(".clipboard-label")
 
-    // Ưu tiên theo thứ tự: textValue > data-clipboard-text > sourceTarget
-    let text = this.textValue?.trim()
+    let text = (this.textValue || "").trim()
     if (!text) {
-      text = this.element.dataset.clipboardText
+      text = $btn.data("clipboard-text") || this.element.dataset.clipboardText
     }
     if (!text && this.hasSourceTarget) {
-      text = $(this.sourceTarget).val() || $(this.sourceTarget).text()
+      const $source = $(this.sourceTarget)
+      text = $source.val() || $source.text()
     }
-    if (!text) return
+    if (!text || !navigator.clipboard) return
 
     navigator.clipboard.writeText(text).then(() => {
       const original = $label.data("original") || $label.text()
@@ -28,7 +28,9 @@ export default class extends Controller {
 
       $label.text("Copied!")
       $btn.addClass("btn-success")
-      $btn.removeClass("btn-outline-secondary btn-outline-primary btn-outline-success")
+      $btn.removeClass(
+        "btn-outline-secondary btn-outline-primary btn-outline-success",
+      )
 
       setTimeout(() => {
         $label.text(original)
@@ -36,7 +38,7 @@ export default class extends Controller {
         $btn.addClass("btn-outline-secondary")
       }, 1500)
     }).catch(err => {
-      alert(`Copy failed: ${err}`)
+      console.error(`Copy failed: ${err}`)
     })
   }
 }
