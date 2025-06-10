@@ -2,7 +2,13 @@
      data-controller="redirect"
      data-redirect-url-value="<%= @short_link.original_url %>"
      data-redirect-seconds-value="5">
-  <h1>Redirecting...</h1>
+  <h1>
+    Redirecting to
+    <%= @short_link.page_title.presence || URI.parse(@short_link.original_url).host %>
+  </h1>
+  <% if @short_link.meta_description.present? %>
+    <p class="text-muted"><%= @short_link.meta_description %></p>
+  <% end %>
   <p>You will be redirected in <span data-redirect-target="countdown">3</span> seconds.</p>
   <p>If it doesn’t happen automatically, <a href="<%= @short_link.original_url %>">click here</a>.</p>
   <button class="redirect-button" data-action="redirect#goto">Go Now</button>
