@@ -17,13 +17,13 @@ services:
       # - "/root/momly/logs:/app/log"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
     environment:
-      RAILS_MASTER_KEY: "c7ebc6ee15735be6808a56391251f1aa"
+      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY_MOMLY}
       DATABASE_POOL: ${DATABASE_POOL}
       DATABASE_HOST: ${DATABASE_HOST}
       DATABASE_PORT: ${DATABASE_PORT}
       DATABASE_USER: ${POSTGRES_USER}
       DATABASE_PASSWORD: ${POSTGRES_PASSWORD}
-      DATABASE_PRODUCTION: "momly_production"
+      DATABASE_PRODUCTION: ${DATABASE_PRODUCTION_MOMLY}
       RAILS_ENV: ${RAILS_ENV:-production}
       PORT: ${PORT:-3000}
     command: /bin/sh "/app/.dockerdev/commander/rails.sh"
