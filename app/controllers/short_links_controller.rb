@@ -9,21 +9,36 @@ class ShortLinksController < ApplicationController
   before_action :ensure_guest_or_user!, only: :create
   before_action :set_short_link, only: %i[destroy redirect stats]
 
-  rescue_from ActiveRecord::RecordInvalid, with: :handle_record_invalid
-  rescue_from ActiveRecord::RecordNotFound, with: :handle_record_not_found
-  rescue_from URI::InvalidURIError, ArgumentError, with: :handle_invalid_url
-  rescue_from ShortLinkServices::BlockedDomainError, with: :respond_error
-  rescue_from ShortLinkServices::UnsafeUrlError, with: :respond_error
-  rescue_from StandardError, with: :handle_unexpected_error
-
   def create
     @short_link = ShortLinkServices::Create.new(
       user: current_user,
-      original_url: short_link_params[:original_url],
-      publicly_visible: ActiveModel::Type::Boolean.new.cast(short_link_params[:publicly_visible])
+      original_url: short_link_params[:original_url]
     ).call
 
     respond_success("Link shortened!")
+
+  rescue ActiveRecord::RecordInvalid => e
+    respond_error(e.record.errors.full_messages.join(', '))
+
+  rescue ActiveRecord::RecordNotFound => e
+    respond_error("Record not found: #{e.message}")
+
+  rescue URI::InvalidURIError, ArgumentError => e
+    respond_error("Invalid URL: #{e.message}")
+
+  rescue ShortLinkServices::BlockedDomainError => e
+    respond_error(e.message)
+
+  rescue ShortLinkServices::UnsafeUrlError => e
+    respond_error(e.message)
+
+  rescue => e
+    Rails.logger.error <<~LOG
+      [ShortLinksController#create] Unexpected error:
+      #{e.class} - #{e.message}
+      #{e.backtrace&.take(10)&.join("\n")}
+    LOG
+    respond_error("Unexpected error: #{e.class.name}")
   end
 
   def destroy
@@ -100,7 +115,8 @@ class ShortLinksController < ApplicationController
     end
   end
 
-  def respond_error(message)
+  def respond_error(error)
+    message = error.respond_to?(:message) ? error.message : error.to_s
     @error_message = message
 
     respond_to do |format|
