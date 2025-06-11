@@ -9,12 +9,17 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 gem "rails",                   "~> 7.0.8", ">= 7.0.8.7"
 gem "pg",                      "~> 1.1"                  # PostgreSQL
 gem "puma",                    "~> 5.0"                  # Web server
-gem "sprockets-rails"                                     # Asset pipeline
-gem "importmap-rails"                                    # ESM for JS
-gem "turbo-rails"                                        # Hotwire: Turbo
-gem "stimulus-rails"                                     # Hotwire: Stimulus
+gem "sprockets-rails"                                    # Asset pipeline
 gem "jbuilder"                                           # JSON APIs
 gem "bootsnap",                require: false
+
+# ----------------------------------------
+# Frontend & UI
+# ----------------------------------------
+gem "turbo-rails"                                        # Hotwire
+gem "sassc-rails"                                        # SCSS support
+gem "stimulus-rails"                                     # JS framework
+gem "importmap-rails"                                    # ESM for JS
 
 # ----------------------------------------
 # Authentication
@@ -29,14 +34,14 @@ gem "omniauth-rails_csrf_protection"
 # Utilities & Helpers
 # ----------------------------------------
 gem "seed_migration"                                      # Data migrations
-gem "pagy",                    "~> 9.3"                    # Pagination
-gem "rqrcode"                                            # QR code generation
+gem "pagy",                    "~> 9.3"                   # Pagination
+gem "rqrcode"                                             # QR code generation
 
 # ----------------------------------------
 # External APIs & Security
 # ----------------------------------------
 gem "faraday"                                             # HTTP client
-gem "nokogiri"                                           # HTML parsing
+gem "nokogiri"                                            # HTML parsing
 gem "rack-attack"                                         # Rate limiter
 gem "google-api-client"                                   # Google API SDK
 gem "recaptcha"                                           # Google reCAPTCHA
