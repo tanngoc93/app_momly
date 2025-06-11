@@ -6,7 +6,10 @@ export default class extends Controller {
   connect() {
     this.updateClasses()
     this.buttonTargets.forEach(btn => {
-      btn.addEventListener('shown.bs.tab', () => this.updateClasses())
+      btn.addEventListener('shown.bs.tab', () => {
+        this.updateClasses()
+        this.resetFormsAndResult()
+      })
     })
   }
 
@@ -20,5 +23,16 @@ export default class extends Controller {
         btn.classList.add('btn-outline-light')
       }
     })
+  }
+
+  resetFormsAndResult() {
+    const frame = document.getElementById('form_response')
+    if (frame) frame.innerHTML = ''
+
+    const shortForm = document.querySelector("form[action='/short_links']")
+    if (shortForm) shortForm.reset()
+
+    const qrForm = document.querySelector("form[action='/qr_code']")
+    if (qrForm) qrForm.reset()
   }
 }
