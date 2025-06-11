@@ -14,5 +14,6 @@ class QrCodesControllerTest < ActionDispatch::IntegrationTest
   test "invalid url returns unprocessable entity" do
     post qr_code_url, params: { url: "bad" }
     assert_response :unprocessable_entity
+    assert_match "Invalid URL", @response.body
   end
 end
