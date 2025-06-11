@@ -1,5 +1,5 @@
 <div class="container-lg py-5 text-white">
   <div class="bg-dark p-4 rounded">
-    <%= raw @page.content_html %>
+    <%= sanitize(@page.content_html, tags: Page::ALLOWED_TAGS, attributes: Page::ALLOWED_ATTRIBUTES) %>
   </div>
 </div>
