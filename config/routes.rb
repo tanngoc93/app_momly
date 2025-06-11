@@ -4,59 +4,48 @@ Sidekiq::Web.use ActionDispatch::Cookies
 Sidekiq::Web.use ActionDispatch::Session::CookieStore, key: '_admin_user_session'
 
 Rails.application.routes.draw do
-  devise_for :admin_users, ActiveAdmin::Devise.config
-  ActiveAdmin.routes(self)
-
+  # Authentication
   devise_for :users, controllers: {
     registrations: 'users/registrations',
     omniauth_callbacks: 'users/omniauth_callbacks'
   }
+  devise_for :admin_users, ActiveAdmin::Devise.config
+  ActiveAdmin.routes(self)
 
-  # Route reset API token cho user
   namespace :users do
     resource :api_token, only: [] do
       post :reset
     end
   end
 
-  # Health check (important for Docker, uptime monitoring, etc.)
-  get "/health", to: proc { [200, { "Content-Type" => "text/plain" }, ["OK"]] }
-
-  # Root path (homepage with form to create short links)
-  root "home#index"
-
-  # Short link management (HTML form + Turbo Stream support)
-  resources :short_links, only: [:create, :destroy] do
-    member do
-      get :stats
-    end
+  # Admin & monitoring
+  authenticate :admin_user do
+    mount Sidekiq::Web => '/sidekiq'
   end
 
-  # Public listing of recent short links
-  get "/public_links", to: "public_links#index", as: :public_links
+  get '/health', to: proc { [200, { 'Content-Type' => 'text/plain' }, ['OK']] }
 
-  #
-  get "/my_links_modal", to: "short_links#modal", as: :my_links_modal
+  # Application routes
+  root 'home#index'
 
-  # API namespace for versioned endpoints
+  resources :short_links, only: %i[create destroy] do
+    member { get :stats }
+  end
+
+  get '/public_links', to: 'public_links#index', as: :public_links
+  get '/my_links_modal', to: 'short_links#modal', as: :my_links_modal
+
   namespace :api do
     namespace :v1 do
-      # POST /api/v1/short_links
-      resources :short_links, only: [:create, :index, :show, :update, :destroy] do
+      resources :short_links, only: %i[create index show update destroy] do
         get :stats, on: :member
       end
     end
   end
 
-  # Sidekiq Web UI
-  authenticate :admin_user do
-    mount Sidekiq::Web => '/sidekiq'
-  end
-
-  # Dynamic short link redirection
-  # Must be placed at the bottom to avoid route collision
-  get "/qr_code", to: "qr_codes#show", as: :qr_code
-  post "/qr_code", to: "qr_codes#create"
-  get "/qr/:short_code", to: "short_links#qr", as: :qr_short
-  get "/:short_code", to: "short_links#redirect", as: :redirect_short
+  # Short link redirection (keep at bottom)
+  get '/qr_code', to: 'qr_codes#show', as: :qr_code
+  post '/qr_code', to: 'qr_codes#create'
+  get '/qr/:short_code', to: 'short_links#qr', as: :qr_short
+  get '/:short_code', to: 'short_links#redirect', as: :redirect_short
 end
