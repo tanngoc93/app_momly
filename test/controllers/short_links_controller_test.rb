@@ -109,4 +109,11 @@ class ShortLinksControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "qr renders code image" do
+    link = ShortLink.create!(original_url: "https://example.com")
+    get qr_short_url(link.short_code)
+    assert_response :success
+    assert_equal "image/png", @response.media_type
+  end
+
 end

@@ -52,5 +52,6 @@ Rails.application.routes.draw do
 
   # Dynamic short link redirection
   # Must be placed at the bottom to avoid route collision
+  get "/qr/:short_code", to: "short_links#qr", as: :qr_short
   get "/:short_code", to: "short_links#redirect", as: :redirect_short
 end

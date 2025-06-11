@@ -15,6 +15,9 @@
                   data-action="clipboard#copy">
             <span class="clipboard-label">Copy</span>
           </button>
+          <%= link_to 'QR', qr_short_path(@short_link.short_code),
+                      class: 'btn btn-outline-success fw-semibold',
+                      target: '_blank' %>
         </div>
       </div>
     </template>
