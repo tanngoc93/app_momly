@@ -1,4 +1,5 @@
 ActiveAdmin.register User do
+  menu priority: 2
   permit_params :email, :password, :password_confirmation, :name
 
   index do
@@ -7,6 +8,9 @@ ActiveAdmin.register User do
     column :email
     column :name
     column :created_at
+    column "Links" do |user|
+      link_to "View", admin_short_links_path(q: { user_id_eq: user.id })
+    end
     actions
   end
 
