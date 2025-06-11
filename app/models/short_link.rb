@@ -21,6 +21,15 @@ class ShortLink < ApplicationRecord
   before_validation :generate_short_code, on: :create
   after_create_commit :enqueue_metadata_job
 
+  # Ransack configuration
+  def self.ransackable_attributes(auth_object = nil)
+    %w[id short_code original_url user_id publicly_visible created_at]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    %w[user short_link_clicks]
+  end
+
   # == Instance methods ==
   def created_via
     source.presence || "web"

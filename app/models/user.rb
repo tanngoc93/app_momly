@@ -35,6 +35,15 @@ class User < ApplicationRecord
     user
   end
 
+  # Ransack configuration
+  def self.ransackable_attributes(auth_object = nil)
+    %w[id email name created_at updated_at]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    %w[short_links]
+  end
+
   # == Instance methods ==
   def reset_api_token!
     update!(api_token: generate_unique_api_token)
