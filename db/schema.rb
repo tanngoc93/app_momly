@@ -31,6 +31,17 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_15_000000) do
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
   end
 
+  create_table "pages", force: :cascade do |t|
+    t.string "title", null: false
+    t.string "slug", null: false
+    t.text "content_html"
+    t.string "meta_title"
+    t.text "meta_description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["slug"], name: "index_pages_on_slug", unique: true
+  end
+
   create_table "seed_migration_data_migrations", id: :serial, force: :cascade do |t|
     t.string "version"
     t.integer "runtime"
@@ -67,17 +78,6 @@ ActiveRecord::Schema[7.0].define(version: 2025_06_15_000000) do
     t.index ["short_code"], name: "index_short_links_on_short_code_unique", unique: true
     t.index ["user_id", "original_url"], name: "index_short_links_on_user_and_original_url"
     t.index ["user_id"], name: "index_short_links_on_user_id"
-  end
-
-  create_table "pages", force: :cascade do |t|
-    t.string "title", null: false
-    t.string "slug", null: false
-    t.text "content_html"
-    t.string "meta_title"
-    t.text "meta_description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["slug"], name: "index_pages_on_slug", unique: true
   end
 
   create_table "users", force: :cascade do |t|
