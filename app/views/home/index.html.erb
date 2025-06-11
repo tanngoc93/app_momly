@@ -61,8 +61,15 @@
     <div class="bg-white p-4 p-md-5 rounded-4 shadow" style="max-width: 960px; width: 100%;">
       <div class="tab-content">
         <div class="tab-pane fade show active" id="tab-short" role="tabpanel">
-          <h4 class="fw-bold mb-3 text-center">Shorten a long link</h4>
-          <p class="text-muted text-center mb-4">No credit card required.</p>
+          <h4 class="fw-bold mb-2 text-center">Shorten a long link</h4>
+
+          <% unless user_signed_in? %>
+            <p class="text-muted text-center small mb-4">
+              Guest links with no visits for 30 days are automatically removed.
+            </p>
+          <% else %>
+            <p class="text-muted text-center mb-4">No credit card required.</p>
+          <% end %>
 
           <%= form_tag short_links_path, method: :post, data: { turbo_frame: "form_response" }, class: "d-flex flex-column gap-3" do %>
             <% unless user_signed_in? %>
