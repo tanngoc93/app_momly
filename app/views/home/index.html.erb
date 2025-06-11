@@ -69,11 +69,28 @@
         </div>
 
         <%= submit_tag "Get your link for free ➜", class: "btn btn-primary btn-lg fw-semibold mt-2" %>
+        <button type="button" class="btn btn-outline-secondary btn-lg fw-semibold mt-2" data-bs-toggle="modal" data-bs-target="#qrModal">Create QR Code</button>
       <% end %>
 
       <!-- Kết quả -->
       <div class="mt-4">
         <turbo-frame id="form_response"></turbo-frame>
+      </div>
+      <!-- QR Modal -->
+      <div class="modal fade" id="qrModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title fw-bold">Generate QR Code</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <turbo-frame id="qr_code_frame">
+                <%= render partial: "qr_codes/form" %>
+              </turbo-frame>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

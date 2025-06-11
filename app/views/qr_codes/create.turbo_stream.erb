@@ -1,0 +1,3 @@
+<%= turbo_stream.replace "qr_code_frame" do %>
+  <%= render partial: "qr_codes/result", locals: { url: @url } %>
+<% end %>

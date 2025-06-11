@@ -1,0 +1,6 @@
+<%= form_with url: qr_code_path, method: :post, data: { turbo_frame: "qr_code_frame" } do %>
+  <div class="input-group">
+    <%= text_field_tag :url, nil, placeholder: "https://example.com", class: "form-control" %>
+    <%= submit_tag "Generate", class: "btn btn-primary" %>
+  </div>
+<% end %>

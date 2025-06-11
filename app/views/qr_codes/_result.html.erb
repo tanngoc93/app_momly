@@ -1,0 +1,5 @@
+<div class="text-center">
+  <p class="fw-semibold">QR code đã sẵn sàng dùng</p>
+  <img src="<%= qr_code_path(url: url) %>" alt="QR Code" class="mb-3" width="300" height="300">
+  <%= link_to "Download", qr_code_path(url: url, download: 1), class: "btn btn-success", target: "_blank" %>
+</div>
