@@ -89,6 +89,20 @@
     </div>
   </div>
 
+  <div class="modal fade" id="qrCodeModal" tabindex="-1" aria-labelledby="qrCodeModalLabel" aria-hidden="true" data-controller="qr-modal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold" id="qrCodeModalLabel">Your QR Code</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <turbo-frame id="qr_modal_frame" data-action="turbo:frame-load->qr-modal#show"></turbo-frame>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- JavaScript moved to Stimulus controllers -->
 <% else %>
   <style>
