@@ -116,6 +116,8 @@ cron job enqueues `CleanupExpiredGuestLinksJob` every day at 2&nbsp;AM.
 Old click analytics are removed with `CleanupOldShortLinkClicksJob` at
 3&nbsp;AM. The retention period defaults to 90&nbsp;days and can be adjusted
 using the `SHORT_LINK_CLICK_RETENTION_DAYS` environment variable.
+Sitemaps are regenerated each Sunday at 4&nbsp;AM by `GenerateSitemapJob`
+to keep search engines aware of all public pages.
 After deploying, refresh the crontab with:
 
 ```bash
