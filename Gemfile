@@ -6,7 +6,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 # ----------------------------------------
 # Core Framework & Runtime
 # ----------------------------------------
-gem "rails",                   "~> 7.0.8", ">= 7.0.8.7"
+gem "rails",                   "~> 7.1.3"
 gem "pg",                      "~> 1.1"                  # PostgreSQL
 gem "puma",                    "~> 5.0"                  # Web server
 gem "sprockets-rails"                                    # Asset pipeline
