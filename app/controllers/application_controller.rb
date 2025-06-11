@@ -3,7 +3,7 @@
 class ApplicationController < ActionController::Base
   include Pagy::Backend
 
-  before_action :authenticate_user!
+  before_action :authenticate_user!, unless: :admin_request?
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   protected
@@ -14,5 +14,9 @@ class ApplicationController < ActionController::Base
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:account_update, keys: [:name])
+  end
+
+  def admin_request?
+    request.path.start_with?("/admin")
   end
 end
