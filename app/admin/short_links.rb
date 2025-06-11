@@ -1,8 +1,12 @@
 ActiveAdmin.register ShortLink do
+  menu priority: 3
   permit_params :original_url, :short_code, :user_id, :publicly_visible
 
   scope :all, default: true
   scope :guest_links
+  scope "User Links" do |links|
+    links.where.not(user_id: nil)
+  end
 
   filter :user
   filter :short_code
