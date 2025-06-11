@@ -25,7 +25,7 @@
         <a class="navbar-brand fw-bold text-white" href="/">Momly</a>
 
         <div class="ms-auto d-flex align-items-center gap-2">
-          <%= link_to "Explore", public_links_path, class: "btn btn-outline-light btn-sm" %>
+          <%= nav_link_to "Explore", public_links_path %>
           <% if user_signed_in? %>
             <%= button_tag "My Links", class: "btn btn-outline-light btn-sm", data: { bs_toggle: "modal", bs_target: "#myLinksModal" } %>
             <%= link_to "Setting", edit_user_registration_path, class: "btn btn-outline-light btn-sm" %>

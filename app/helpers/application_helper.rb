@@ -13,6 +13,11 @@ module ApplicationHelper
     current_page?(path) ? "btn btn-light btn-sm" : "btn btn-outline-light btn-sm"
   end
 
+  def nav_link_to(name, path)
+    classes = current_page?(path) ? "btn btn-light btn-sm" : "btn btn-outline-light btn-sm"
+    link_to name, path, class: classes
+  end
+
   def signed_guest_token
     verifier = ActiveSupport::MessageVerifier.new(Rails.application.secret_key_base)
     issued_at = Time.current
