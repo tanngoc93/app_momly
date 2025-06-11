@@ -9,7 +9,9 @@ Rails.application.routes.draw do
     registrations: 'users/registrations',
     omniauth_callbacks: 'users/omniauth_callbacks'
   }
-  devise_for :admin_users, ActiveAdmin::Devise.config
+  devise_for :admin_users, ActiveAdmin::Devise.config.merge(
+    controllers: { sessions: 'admin/sessions' }
+  )
   ActiveAdmin.routes(self)
 
   namespace :users do
