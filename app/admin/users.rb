@@ -1,5 +1,5 @@
 ActiveAdmin.register User do
-  menu priority: 2
+  menu priority: 3
   permit_params :email, :password, :password_confirmation, :name
 
   index do
