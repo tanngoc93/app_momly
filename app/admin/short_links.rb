@@ -1,5 +1,5 @@
 ActiveAdmin.register ShortLink do
-  menu priority: 4
+  menu priority: 5
   permit_params :original_url, :short_code, :user_id, :publicly_visible
 
   scope :all, default: true
