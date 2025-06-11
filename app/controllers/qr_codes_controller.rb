@@ -19,7 +19,10 @@ class QrCodesController < ApplicationController
       end
     rescue ArgumentError, ShortLinkServices::BlockedDomainError, ShortLinkServices::UnsafeUrlError => e
       @error = e.message
-      render partial: "qr_codes/form", status: :unprocessable_entity
+      respond_to do |format|
+        format.turbo_stream { render :create, status: :unprocessable_entity }
+        format.html { redirect_to root_path, alert: e.message }
+      end
     end
   end
 
