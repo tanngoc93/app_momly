@@ -3,6 +3,6 @@
 
 <section class="features py-5 bg-white">
   <div class="container-lg py-5">
-    <%= raw @page.content_html %>
+    <%= sanitize(@page.content_html, tags: Page::ALLOWED_TAGS, attributes: Page::ALLOWED_ATTRIBUTES) %>
   </div>
 </section>
