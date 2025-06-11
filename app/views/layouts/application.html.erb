@@ -53,24 +53,26 @@
       <%= yield %>
     </main>
 
-    <% if user_signed_in? %>
-      <div class="modal fade" id="myLinksModal" tabindex="-1" aria-labelledby="myLinksModalLabel" aria-hidden="true" data-controller="modal-loader">
-        <div class="modal-dialog modal-lg modal-dialog-scrollable">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title fw-bold" id="myLinksModalLabel">📁 My Short Links</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <turbo-frame id="my_links_frame" src="<%= my_links_modal_path %>" data-src="<%= my_links_modal_path %>">
-                <div class="text-center py-4 text-muted">Loading your links...</div>
-              </turbo-frame>
+      <% if user_signed_in? %>
+        <div class="modal fade" id="myLinksModal" tabindex="-1" aria-labelledby="myLinksModalLabel" aria-hidden="true" data-controller="modal-loader">
+          <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title fw-bold" id="myLinksModalLabel">📁 My Short Links</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <turbo-frame id="my_links_frame" src="<%= my_links_modal_path %>" data-src="<%= my_links_modal_path %>">
+                  <div class="text-center py-4 text-muted">Loading your links...</div>
+                </turbo-frame>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- JavaScript behavior moved to Stimulus controllers -->
-    <% end %>
-  </body>
-</html>
+        <!-- JavaScript behavior moved to Stimulus controllers -->
+      <% end %>
+
+      <%= render 'layouts/footer' %>
+    </body>
+  </html>
