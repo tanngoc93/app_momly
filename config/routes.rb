@@ -1,11 +1,11 @@
 require 'sidekiq/web'
 
-Sidekiq::Web.use Rack::Auth::Basic do |username, password|
-  ActiveSupport::SecurityUtils.secure_compare(username, 'tanngoc93') &
-    ActiveSupport::SecurityUtils.secure_compare(password, 'tanngoc93@password')
-end
+Sidekiq::Web.use ActionDispatch::Cookies
+Sidekiq::Web.use ActionDispatch::Session::CookieStore, key: '_admin_user_session'
 
 Rails.application.routes.draw do
+  devise_for :admin_users, ActiveAdmin::Devise.config
+  ActiveAdmin.routes(self)
   devise_for :users, controllers: {
     registrations: 'users/registrations',
     omniauth_callbacks: 'users/omniauth_callbacks'
@@ -48,7 +48,9 @@ Rails.application.routes.draw do
   end
 
   # Sidekiq Web UI
-  mount Sidekiq::Web => '/sidekiq'
+  authenticate :admin_user do
+    mount Sidekiq::Web => '/sidekiq'
+  end
 
   # Dynamic short link redirection
   # Must be placed at the bottom to avoid route collision

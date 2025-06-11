@@ -11,6 +11,10 @@
 # It's strongly recommended to check this file into your version control system.
 
 ActiveRecord::Base.transaction do
+  AdminUser.find_or_create_by!(email: ENV.fetch('ADMIN_EMAIL', 'admin@example.com')) do |user|
+    user.password = ENV.fetch('ADMIN_PASSWORD', 'password')
+    user.password_confirmation = ENV.fetch('ADMIN_PASSWORD', 'password')
+  end
 end
 
 SeedMigration::Migrator.bootstrap()
