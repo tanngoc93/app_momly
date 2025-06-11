@@ -1,10 +1,18 @@
 # frozen_string_literal: true
 
 class Rack::Attack
+  class Request < ::Rack::Request
+    def real_ip
+      env['HTTP_CF_CONNECTING_IP'] ||
+        env['HTTP_X_REAL_IP'] ||
+        env['HTTP_X_FORWARDED_FOR']&.split(',')&.first&.strip ||
+        ip
+    end
+  end
   # Throttle: Guest short link creation (10 per 5 minutes)
   throttle('limit guest short_links#create per IP', limit: 3, period: 5.minutes) do |req|
     if req.path == '/short_links' && req.post?
-      req.params['guest_mode'] == 'on' ? req.ip : nil
+      req.params['guest_mode'] == 'on' ? req.real_ip : nil
     end
   end
 
@@ -13,7 +21,7 @@ class Rack::Attack
   throttle('limit signups per ip', limit: 10, period: 1.hour) do |req|
     # Check if the request is a POST to the /register path
     if req.path == '/register' && req.post?
-      req.ip
+      req.real_ip
     end
   end
 
@@ -22,7 +30,7 @@ class Rack::Attack
   throttle('limit admin login per ip', limit: 10, period: 1.hour) do |req|
     # Check if the request is a POST to the /admin/login path
     if req.path == '/admin/login' && req.post?
-      req.ip
+      req.real_ip
     end
   end
 
