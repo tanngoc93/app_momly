@@ -26,6 +26,15 @@
       padding-bottom: 60px;
     }
 
+    #qrCodeModal .modal-content {
+      border: none;
+      border-radius: 1rem;
+    }
+
+    #qrCodeModal .modal-body {
+      padding: 2rem;
+    }
+
     @media (max-width: 768px) {
       .hero-section {
         padding-top: 20px;
@@ -41,44 +50,67 @@
       Build, edit, and track everything — simple and free.
     </p>
 
-    <div class="mt-4">
-      <button class="btn btn-light me-2 px-4 py-2 fw-semibold">🔗 Short link</button>
-      <button class="btn btn-outline-light px-4 py-2 fw-semibold" disabled>📷 QR Code</button>
+    <div class="mt-4" id="linkTabs" role="tablist">
+      <button class="btn btn-light me-2 px-4 py-2 fw-semibold active" data-bs-toggle="tab" data-bs-target="#tab-short" type="button" role="tab">🔗 Short link</button>
+      <button class="btn btn-outline-light px-4 py-2 fw-semibold" data-bs-toggle="tab" data-bs-target="#tab-qr" type="button" role="tab">📷 QR Code</button>
     </div>
   </div>
 
-  <!-- Shorten Link Form -->
+  <!-- Shorten Link or QR Code Form -->
   <div class="form-section container">
     <div class="bg-white p-4 p-md-5 rounded-4 shadow" style="max-width: 960px; width: 100%;">
-      <h4 class="fw-bold mb-3 text-center">Shorten a long link</h4>
-      <p class="text-muted text-center mb-2">No credit card required.</p>
-      <% unless user_signed_in? %>
-        <p class="text-muted text-center small mb-4">
-          Guest links with no visits for 30 days are automatically removed.
-        </p>
-      <% end %>
+      <div class="tab-content">
+        <div class="tab-pane fade show active" id="tab-short" role="tabpanel">
+          <h4 class="fw-bold mb-2 text-center">Shorten a long link</h4>
 
-      <%= form_tag short_links_path, method: :post, data: { turbo_frame: "form_response" }, class: "d-flex flex-column gap-3" do %>
-        <% unless user_signed_in? %>
-          <%= hidden_field_tag :guest_token, signed_guest_token %>
-        <% end %>
+          <% unless user_signed_in? %>
+            <p class="text-muted text-center small mb-4">
+              Guest links with no visits for 30 days are automatically removed.
+            </p>
+          <% else %>
+            <p class="text-muted text-center mb-4">No credit card required.</p>
+          <% end %>
 
-        <div class="input-group input-group-lg">
-          <%= text_field_tag "short_link[original_url]", nil, placeholder: "https://example.com/your-url",
-                class: "form-control", autofocus: true %>
+          <%= form_tag short_links_path, method: :post, data: { turbo_frame: "form_response" }, class: "d-flex flex-column gap-3" do %>
+            <% unless user_signed_in? %>
+              <%= hidden_field_tag :guest_token, signed_guest_token %>
+            <% end %>
+
+            <div class="input-group input-group-lg">
+              <%= text_field_tag "short_link[original_url]", nil, placeholder: "https://example.com/your-url",
+                    class: "form-control", autofocus: true %>
+            </div>
+
+            <div class="form-check form-switch mt-2">
+              <%= check_box_tag "short_link[publicly_visible]", "1", false, class: "form-check-input", id: "short_link_publicly_visible" %>
+              <%= label_tag "short_link_publicly_visible", "Show on public page", class: "form-check-label ms-2 text-muted" %>
+            </div>
+
+            <%= submit_tag "Get your link for free ➜", class: "btn btn-primary btn-lg fw-semibold mt-2" %>
+          <% end %>
         </div>
 
-        <div class="form-check form-switch mt-2">
-          <%= check_box_tag "short_link[publicly_visible]", "1", false, class: "form-check-input", id: "short_link_publicly_visible" %>
-          <%= label_tag "short_link_publicly_visible", "Show on public page", class: "form-check-label ms-2 text-muted" %>
-        </div>
+        <div class="tab-pane fade" id="tab-qr" role="tabpanel">
+          <h4 class="fw-bold mb-3 text-center">Generate QR Code</h4>
+          <p class="text-muted text-center mb-4">No credit card required.</p>
 
-        <%= submit_tag "Get your link for free ➜", class: "btn btn-primary btn-lg fw-semibold mt-2" %>
-      <% end %>
+          <%= render partial: "qr_codes/form" %>
+        </div>
+      </div>
 
       <!-- Kết quả -->
       <div class="mt-4">
         <turbo-frame id="form_response"></turbo-frame>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="qrCodeModal" tabindex="-1" aria-hidden="true" data-controller="qr-modal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 rounded-4 shadow-lg">
+        <div class="modal-body p-4">
+          <turbo-frame id="qr_modal_frame" data-action="turbo:frame-load->qr-modal#show"></turbo-frame>
+        </div>
       </div>
     </div>
   </div>

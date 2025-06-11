@@ -1,12 +1,14 @@
 # frozen_string_literal: true
 
+require "rqrcode"
+
 class ShortLinksController < ApplicationController
   include ActionView::RecordIdentifier
 
-  skip_before_action :authenticate_user!, only: %i[index create redirect]
+  skip_before_action :authenticate_user!, only: %i[index create redirect qr]
 
   before_action :ensure_guest_or_user!, only: :create
-  before_action :set_short_link, only: %i[destroy redirect stats]
+  before_action :set_short_link, only: %i[destroy redirect stats qr]
 
   def create
     @short_link = ShortLinkServices::Create.new(
@@ -59,6 +61,13 @@ class ShortLinksController < ApplicationController
     track_click
 
     render :wait_redirect, layout: "minimal"
+  end
+
+  def qr
+    url = redirect_short_url(@short_link.short_code)
+    qr = RQRCode::QRCode.new(url)
+    png = qr.as_png(size: 300)
+    send_data png.to_s, type: "image/png", disposition: "inline"
   end
 
   def stats
@@ -147,7 +156,7 @@ class ShortLinksController < ApplicationController
   end
 
   def set_short_link
-    @short_link = if action_name == 'redirect'
+    @short_link = if action_name.in?(%w[redirect qr])
                     ShortLink.find_by!(short_code: params[:short_code])
                   else
                     current_user.short_links.find(params[:id])

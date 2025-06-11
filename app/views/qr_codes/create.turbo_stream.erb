@@ -1,0 +1,3 @@
+<%= turbo_stream.update "qr_modal_frame" do %>
+  <%= render partial: "qr_codes/result", locals: { url: @url } %>
+<% end %>
