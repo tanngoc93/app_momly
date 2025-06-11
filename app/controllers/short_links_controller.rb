@@ -167,7 +167,7 @@ class ShortLinksController < ApplicationController
     @short_link.increment!(:click_count)
     @short_link.update_column(:last_accessed_at, Time.current)
     @short_link.short_link_clicks.create(
-      ip: request.remote_ip,
+      ip: real_ip,
       referrer: request.referrer,
       user_agent: request.user_agent
     )

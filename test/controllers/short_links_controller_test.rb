@@ -116,4 +116,12 @@ class ShortLinksControllerTest < ActionDispatch::IntegrationTest
     assert_equal "image/png", @response.media_type
   end
 
+  test "redirect records ip from cloudflare header" do
+    link = ShortLink.create!(original_url: "https://example.com")
+    assert_difference("ShortLinkClick.count", 1) do
+      get redirect_short_url(link.short_code), headers: { "CF-Connecting-IP" => "1.2.3.4" }
+    end
+    assert_equal "1.2.3.4", ShortLinkClick.last.ip
+  end
+
 end
