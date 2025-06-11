@@ -8,7 +8,10 @@ ActiveAdmin.register ShortLink do
     links.where.not(user_id: nil)
   end
 
-  filter :user
+  filter :user_id,
+         as: :select,
+         collection: -> { User.order(:email).pluck(:email, :id) },
+         label: 'User Email'
   filter :short_code
   filter :created_at
 
