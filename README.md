@@ -14,6 +14,7 @@ Momly is a lightweight link shortener built with [Ruby on Rails](https://rubyonr
 - REST API secured with personal API tokens
 - Rate limiting for guest requests and sign‑ups via Rack::Attack
 - Dashboard to view aggregated click metrics
+- Create custom pages with SEO metadata from the admin panel
 
 ## Requirements
 

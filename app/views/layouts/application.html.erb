@@ -1,7 +1,16 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Momly — Clean & Powerful Link Shortener</title>
+    <title><%= content_for?(:page_title) ? yield(:page_title) : "Momly — Clean & Powerful Link Shortener" %></title>
+    <% if content_for?(:meta_description) %>
+      <meta name="description" content="<%= yield(:meta_description) %>" />
+      <meta property="og:description" content="<%= yield(:meta_description) %>" />
+    <% end %>
+    <% if content_for?(:page_title) %>
+      <meta property="og:title" content="<%= yield(:page_title) %>" />
+      <meta property="og:url" content="<%= request.original_url %>" />
+      <meta property="og:type" content="website" />
+    <% end %>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
