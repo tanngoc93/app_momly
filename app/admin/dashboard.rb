@@ -16,9 +16,12 @@ ActiveAdmin.register_page "Dashboard" do
 
       column do
         panel "Recent Short Links" do
-          ul do
-            ShortLink.order(created_at: :desc).limit(5).map do |link|
-              li link_to(link.short_code, admin_short_link_path(link))
+          table_for ShortLink.order(created_at: :desc).limit(50) do
+            column "Short URL" do |link|
+              link_to redirect_short_url(link.short_code), redirect_short_url(link.short_code), target: "_blank"
+            end
+            column "Creator" do |link|
+              link.user ? link.user.email : "Guest"
             end
           end
         end
