@@ -1,0 +1,17 @@
+<%= form_with url: qr_code_path,
+              method: :post,
+              data: {
+                turbo_frame: "qr_modal_frame",
+                controller: "qr-form",
+                qr_form_modal_id_value: "qrCodeModal",
+                action: "turbo:submit-end->qr-form#submitEnd"
+              },
+              class: "d-flex flex-column gap-3" do %>
+  <% if defined?(@error) && @error.present? %>
+    <div class="alert alert-danger" role="alert"><%= @error %></div>
+  <% end %>
+  <div class="input-group input-group-lg">
+    <%= text_field_tag :url, @url, placeholder: "https://example.com", class: "form-control", autofocus: true %>
+  </div>
+  <%= submit_tag "Create My QR Code ➜", class: "btn btn-success btn-lg fw-semibold mt-2" %>
+<% end %>

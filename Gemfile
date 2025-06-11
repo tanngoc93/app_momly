@@ -30,6 +30,7 @@ gem "omniauth-rails_csrf_protection"
 # ----------------------------------------
 gem "seed_migration"                                      # Data migrations
 gem "pagy",                    "~> 9.3"                    # Pagination
+gem "rqrcode"                                            # QR code generation
 
 # ----------------------------------------
 # External APIs & Security

@@ -44,6 +44,10 @@
               <span class="clipboard-label">Copy</span>
             </button>
 
+            <%= link_to "QR", qr_short_path(link.short_code),
+                        class: "btn btn-sm btn-outline-secondary",
+                        target: "_blank" %>
+
             <%= button_to short_link_path(link),
                   method: :delete,
                   data: { turbo_confirm: "Are you sure you want to remove this short link?" },
