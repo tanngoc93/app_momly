@@ -22,7 +22,11 @@ class GoogleSafeBrowsingService
 
   # Checks if the URL is alive (responds with 2xx or 3xx HTTP status)
   def self.url_alive?(url)
-    Faraday.head(url).status.in?(200..399)
+    conn = Faraday.new(url, ssl: { verify: false }) do |f|
+      f.adapter Faraday.default_adapter
+    end
+
+    conn.head.status.in?(200..399)
   rescue Faraday::Error => e
     Rails.logger.warn("[SafeBrowsing] URL unreachable: #{url} (#{e.class.name})")
     false
