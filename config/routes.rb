@@ -35,6 +35,9 @@ Rails.application.routes.draw do
   get '/public_links', to: 'public_links#index', as: :public_links
   get '/my_links_modal', to: 'short_links#modal', as: :my_links_modal
 
+  # CMS pages
+  get '/pages/:slug', to: 'pages#show', as: :page
+
   namespace :api do
     namespace :v1 do
       resources :short_links, only: %i[create index show update destroy] do
