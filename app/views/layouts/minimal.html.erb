@@ -9,6 +9,10 @@
     <meta property="og:type" content="website" />
     <!--<meta property="og:image" content="<%#= asset_url('momly.png') %>" />-->
     <link rel="canonical" href="<%= @short_link&.original_url %>" />
+    <%# Fallback redirect in case JavaScript fails %>
+    <% if @short_link %>
+      <meta http-equiv="refresh" content="5;url=<%= @short_link.original_url %>" />
+    <% end %>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
