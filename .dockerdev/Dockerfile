@@ -2,18 +2,13 @@ FROM ruby:3.2.3-slim
 
 ARG ARG_RAILS_MASTER_KEY
 
-ENV RAILS_ENV=production \
-    RAILS_MASTER_KEY=$ARG_RAILS_MASTER_KEY \
-    BUNDLE_PATH=/bundle \
-    BUNDLE_JOBS=4 \
-    BUNDLE_RETRY=3 \
-    BUNDLE_APP_CONFIG=.bundle \
+ENV ACCEPT_EULA=Y \
     APP_DIR=/app \
-    RAILS_SERVE_STATIC_FILES=true \
-    RAILS_LOG_TO_STDOUT=true \
-    LANG=C.UTF-8 \
+    BUNDLE_PATH=/bundle \
     DEBIAN_FRONTEND=noninteractive \
-    PORT=3000
+    PORT=3000 \
+    RAILS_ENV=production \
+    RAILS_MASTER_KEY=${ARG_RAILS_MASTER_KEY}
 
 # Install necessary packages
 RUN apt-get update -qq && \
