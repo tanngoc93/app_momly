@@ -12,3 +12,8 @@ end
 every 1.day, at: '3:00 am' do
   runner 'CleanupOldShortLinkClicksJob.perform_later'
 end
+
+# Generate sitemap weekly for SEO
+every :sunday, at: '4:00 am' do
+  runner 'GenerateSitemapJob.perform_later'
+end

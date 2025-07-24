@@ -14,6 +14,7 @@ Momly is a lightweight link shortener built with [Ruby on Rails](https://rubyonr
 - REST API secured with personal API tokens
 - Rate limiting for guest requests and sign‑ups via Rack::Attack
 - Dashboard to view aggregated click metrics
+- Create custom pages with SEO metadata from the admin panel
 
 ## Requirements
 
@@ -43,6 +44,12 @@ docker compose up
 ```
 
 This exposes the app on port `3001`.
+
+**Note:** When running the Rails server inside Docker, requests originate from
+the Docker gateway (for example `172.17.0.1`). As a result `request.remote_ip`
+will show that gateway address. To capture the client's actual IP, run the
+container behind a reverse proxy that forwards `X-Real-IP`/`X-Forwarded-For` or
+use host networking.
 
 Start the Sidekiq worker in another terminal:
 
@@ -109,6 +116,8 @@ cron job enqueues `CleanupExpiredGuestLinksJob` every day at 2&nbsp;AM.
 Old click analytics are removed with `CleanupOldShortLinkClicksJob` at
 3&nbsp;AM. The retention period defaults to 90&nbsp;days and can be adjusted
 using the `SHORT_LINK_CLICK_RETENTION_DAYS` environment variable.
+Sitemaps are regenerated each Sunday at 4&nbsp;AM by `GenerateSitemapJob`
+to keep search engines aware of all public pages.
 After deploying, refresh the crontab with:
 
 ```bash
