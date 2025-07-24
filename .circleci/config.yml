@@ -45,7 +45,7 @@ jobs:
       - run:
           name: Deploy stack 
           command: |
-            ssh ${SSH_USER}@${SSH_HOST} "docker stack deploy --with-registry-auth -c ${SWARM_STACK} ${STACK_NAME}"
+            ssh ${SSH_USER}@${SSH_HOST} "sh ${DEPLOY_MOMLY_FILE}"
       - run:
           name: Clean server 
           command: |
