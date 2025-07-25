@@ -5,6 +5,7 @@ ARG ARG_RAILS_MASTER_KEY
 ENV ACCEPT_EULA=Y \
     APP_DIR=/app \
     BUNDLE_PATH=/bundle \
+    RAILS_SERVE_STATIC_FILES=true \
     DEBIAN_FRONTEND=noninteractive \
     PORT=3000 \
     RAILS_ENV=production \
