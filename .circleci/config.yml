@@ -50,6 +50,10 @@ jobs:
             IMAGE_TAG=$(cat image_tag.txt)
             docker push ${DOCKER_IMAGE}:$IMAGE_TAG
             docker push ${DOCKER_IMAGE}:latest
+      - persist_to_workspace:
+          root: .
+          paths:
+            - image_tag.txt
 
   deploy-production:
     machine:
