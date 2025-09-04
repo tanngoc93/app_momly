@@ -1,4 +1,4 @@
-# Momly
+# Momly.me
 
 Momly is a lightweight link shortener built with [Ruby on Rails](https://rubyonrails.org/). It lets you generate clean short URLs, manage them from a simple interface and integrate via a small JSON API.
 
