@@ -2,6 +2,8 @@
 
 Momly is a lightweight link shortener built with [Ruby on Rails](https://rubyonrails.org/). It lets you generate clean short URLs, manage them from a simple interface and integrate via a small JSON API.
 
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/tanngoc93/app_momly/tree/main.svg?style=svg&circle-token=CCIPRJ_W1iJ8JuZAmCRkAaxDiwLxj_60ed5c3952f635b513d712a58d56b0ee8d9525c8)](https://dl.circleci.com/status-badge/redirect/gh/tanngoc93/app_momly/tree/main)
+
 ## Features
 
 - Shorten any URL with a six character code
