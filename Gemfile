@@ -6,9 +6,9 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 # ----------------------------------------
 # Core Framework & Runtime
 # ----------------------------------------
-gem "rails",                   "~> 7.1.3"
+gem "rails",                   '~> 7.2', '>= 7.2.2.2'
 gem "pg",                      "~> 1.1"                  # PostgreSQL
-gem "puma",                    "~> 5.0"                  # Web server
+gem "puma",                    "~> 7.0"                  # Web server
 gem "sprockets-rails"                                    # Asset pipeline
 gem "jbuilder"                                           # JSON APIs
 gem "bootsnap",                require: false
@@ -65,7 +65,7 @@ gem "sidekiq"
 # Dev & Test Tools
 # ----------------------------------------
 group :development, :test do
-  gem "debug",                 platforms: %i[mri mingw x64_mingw]
+  gem "debug", platforms: %i[mri mingw x64_mingw]
 end
 
 group :development do
