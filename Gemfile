@@ -65,7 +65,7 @@ gem "sidekiq"
 # Dev & Test Tools
 # ----------------------------------------
 group :development, :test do
-  gem "debug", platforms: %i[mri mingw x64_mingw]
+  gem "debug", platforms: %i[mri mingw windows]
 end
 
 group :development do
@@ -84,4 +84,4 @@ end
 # ----------------------------------------
 # Platform-specific
 # ----------------------------------------
-gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
+gem "tzinfo-data", platforms: %i[mingw mswin windows jruby]
