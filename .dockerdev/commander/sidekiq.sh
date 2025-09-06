@@ -38,4 +38,5 @@ fi
 
 # 🔹 Start Sidekiq
 echo "[INFO] Starting Sidekiq with environment: $RAILS_ENV"
-exec bundle exec sidekiq -C config/sidekiq.yml -e "$RAILS_ENV" "$@"
+bundle exec sidekiq -C config/sidekiq.yml -e "$RAILS_ENV"
+exec "$@"

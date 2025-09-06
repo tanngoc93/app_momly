@@ -52,7 +52,8 @@ fi
 # 🔹 Start server (can be overridden by CMD args)
 if [ "$#" -eq 0 ]; then
   echo "[INFO] Starting Puma server..."
-  exec bundle exec puma -C config/puma.rb
+  bundle exec puma -C config/puma.rb
+  exec "$@"
 else
   echo "[INFO] Running custom command: $*"
   exec "$@"
