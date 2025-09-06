@@ -1,5 +1,7 @@
 ---
+<% unless ENV['RAILS_ENV'] == 'production' %>
 :logfile: ./log/sidekiq.log
+<% end %>
 :concurrency: 5
 :queues:
   - important
