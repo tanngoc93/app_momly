@@ -64,6 +64,7 @@ ENV LANG=C.UTF-8 \
 RUN apt-get update -qq && \
     apt-get install -yq --no-install-recommends \
         curl \
+        procps \
         ca-certificates \
         imagemagick \
         libpq5 \
