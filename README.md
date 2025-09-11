@@ -1,6 +1,6 @@
 # Momly.me
 
-Momly is a lightweight link shortener built with [Ruby on Rails](https://rubyonrails.org/). It lets you generate clean short URLs, manage them from a simple interface and integrate via a small JSON API.
+Momly is a lightweight link shortener powered by Ruby **3.4** and Rails **7.2**. Turn bulky URLs into crisp, shareable links, track detailed analytics from a friendly dashboard and hook into the service through a tiny JSON API.
 
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/tanngoc93/app_momly/tree/main.svg?style=svg&circle-token=CCIPRJ_W1iJ8JuZAmCRkAaxDiwLxj_60ed5c3952f635b513d712a58d56b0ee8d9525c8)](https://dl.circleci.com/status-badge/redirect/gh/tanngoc93/app_momly/tree/main)
 
@@ -20,7 +20,8 @@ Momly is a lightweight link shortener built with [Ruby on Rails](https://rubyonr
 
 ## Requirements
 
-- Ruby 3.2.3
+- Ruby 3.4.5
+- Rails 7.2.2.2
 - PostgreSQL
 - Redis (for the Docker setup)
 
