@@ -1,5 +1,5 @@
 <div class="text-center d-flex flex-column align-items-center">
   <p class="fw-semibold mb-3">Your QR code is ready to use.</p>
-  <img src="<%= qr_code_path(url: url) %>" alt="QR Code" class="mb-3" width="300" height="300">
+  <img src="<%= qr_code_path(url: url) %>" alt="QR Code" class="mb-3 qr-code-preview">
   <%= link_to "Download", qr_code_path(url: url, download: 1), class: "btn btn-primary w-100", target: "_blank" %>
 </div>
