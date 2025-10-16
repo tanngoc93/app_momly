@@ -1,5 +1,6 @@
 require "rqrcode"
 class QrCodesController < ApplicationController
+  include QrCodeRendering
   skip_before_action :authenticate_user!
 
   def create
@@ -28,8 +29,7 @@ class QrCodesController < ApplicationController
 
   def show
     url = params[:url].to_s
-    qr = RQRCode::QRCode.new(url)
-    png = qr.as_png(size: 300)
+    png = generate_qr_png(url)
     if params[:download]
       send_data png.to_s, type: "image/png", disposition: "attachment", filename: "qr.png"
     else

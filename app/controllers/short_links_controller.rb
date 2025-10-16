@@ -4,6 +4,7 @@ require "rqrcode"
 
 class ShortLinksController < ApplicationController
   include ActionView::RecordIdentifier
+  include QrCodeRendering
 
   skip_before_action :authenticate_user!, only: %i[index create redirect qr]
 
@@ -65,8 +66,7 @@ class ShortLinksController < ApplicationController
 
   def qr
     url = redirect_short_url(@short_link.short_code)
-    qr = RQRCode::QRCode.new(url)
-    png = qr.as_png(size: 300)
+    png = generate_qr_png(url)
     send_data png.to_s, type: "image/png", disposition: "inline"
   end
 
