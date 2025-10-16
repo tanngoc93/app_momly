@@ -1,6 +1,7 @@
 require "rqrcode"
 class QrCodesController < ApplicationController
   include QrCodeRendering
+
   skip_before_action :authenticate_user!
 
   def create
