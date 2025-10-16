@@ -13,9 +13,7 @@ module QrCodeRendering
   def qr_png_options
     {
       border_modules: 2,
-      module_px_size: 16,
-      color: "000000",
-      fill: "ffffff"
+      module_px_size: 16
     }
   end
 end
