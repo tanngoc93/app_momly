@@ -48,6 +48,11 @@ docker compose up
 
 This exposes the app on port `3001`.
 
+**Note:** PostgreSQL 18+ expects the data volume mounted at
+`/var/lib/postgresql`. If you see an error about data in
+`/var/lib/postgresql/data`, update the compose file and either recreate the
+volume (`docker compose down -v`) or run a `pg_upgrade`.
+
 **Note:** When running the Rails server inside Docker, requests originate from
 the Docker gateway (for example `172.17.0.1`). As a result `request.remote_ip`
 will show that gateway address. To capture the client's actual IP, run the

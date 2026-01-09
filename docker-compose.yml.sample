@@ -16,7 +16,7 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_USER: postgres
     volumes:
-      - psql:/var/lib/postgresql/data
+      - psql:/var/lib/postgresql
     networks:
       - bridge-network
 
@@ -109,4 +109,3 @@ networks:
 volumes:
   psql:
   bundle_cache:
-

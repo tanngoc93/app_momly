@@ -133,6 +133,7 @@ GEM
       logger
     faraday-net_http (3.4.1)
       net-http (>= 0.5.0)
+    ffi (1.17.2-aarch64-linux-gnu)
     ffi (1.17.2-x86_64-linux-gnu)
     formtastic (5.0.0)
       actionpack (>= 6.0.0)
@@ -256,6 +257,8 @@ GEM
     net-smtp (0.5.1)
       net-protocol
     nio4r (2.7.4)
+    nokogiri (1.18.9-aarch64-linux-gnu)
+      racc (~> 1.4)
     nokogiri (1.18.9-x86_64-linux-gnu)
       racc (~> 1.4)
     oauth2 (2.0.14)
@@ -284,6 +287,7 @@ GEM
     orm_adapter (0.5.0)
     os (1.1.4)
     pagy (9.4.0)
+    pg (1.6.2-aarch64-linux)
     pg (1.6.2-x86_64-linux)
     pp (0.6.2)
       prettyprint
@@ -447,6 +451,7 @@ GEM
     zeitwerk (2.7.3)
 
 PLATFORMS
+  aarch64-linux
   x86_64-linux
 
 DEPENDENCIES
