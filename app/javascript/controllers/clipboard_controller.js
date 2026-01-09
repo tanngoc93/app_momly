@@ -20,9 +20,9 @@ export default class extends Controller {
       const $source = $(this.sourceTarget)
       text = $source.val() || $source.text()
     }
-    if (!text || !navigator.clipboard) return
+    if (!text) return
 
-    navigator.clipboard.writeText(text).then(() => {
+    const showSuccess = () => {
       const original = $label.data("original") || $label.text()
       $label.data("original", original)
 
@@ -37,8 +37,33 @@ export default class extends Controller {
         $btn.removeClass("btn-success")
         $btn.addClass("btn-outline-secondary")
       }, 1500)
-    }).catch(err => {
-      console.error(`Copy failed: ${err}`)
-    })
+    }
+
+    const fallbackCopy = () => {
+      const textarea = document.createElement("textarea")
+      textarea.value = text
+      textarea.setAttribute("readonly", "")
+      textarea.style.position = "absolute"
+      textarea.style.left = "-9999px"
+      document.body.appendChild(textarea)
+      textarea.select()
+      const succeeded = document.execCommand("copy")
+      document.body.removeChild(textarea)
+      if (succeeded) {
+        showSuccess()
+      }
+    }
+
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text)
+        .then(showSuccess)
+        .catch(err => {
+          console.error(`Copy failed: ${err}`)
+          fallbackCopy()
+        })
+      return
+    }
+
+    fallbackCopy()
   }
 }
