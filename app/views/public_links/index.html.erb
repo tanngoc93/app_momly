@@ -1,14 +1,28 @@
+<% content_for :page_title, "Public Links Directory — Momly" %>
+<% content_for :meta_description, "Browse every public link shared on Momly. Discover trending pages, inspiring reads, and useful resources updated in real time." %>
+
 <div class="container py-5" style="max-width: 960px;">
-  <h1 class="fw-bold text-center text-light mb-1">🔥 Latest 100 Guest Links</h1>
-  <p class="text-center text-light small mb-4">
-    Here you can explore the freshest public links shared by our guest community on Momly.
-    Dive in, see what's trending, and share your favorites!
-  </p>
+  <div class="text-center text-light mb-4">
+    <h1 class="fw-bold mb-1">🔥 Public Links Directory</h1>
+    <p class="small mb-2">
+      A curated stream of every public link shared on Momly — updated in real time with
+      titles, summaries, and short links ready to explore.
+    </p>
+    <% if @pagy %>
+      <p class="small text-light-emphasis mb-0">
+        Showing <strong><%= @pagy.items %></strong> per page ·
+        <strong><%= @pagy.count %></strong> public links total
+      </p>
+    <% end %>
+  </div>
 
   <% if @short_links.any? %>
     <ul class="list-group">
       <%= render partial: "public_link_item", collection: @short_links, as: :link %>
     </ul>
+    <div class="d-flex justify-content-center mt-4">
+      <%== pagy_bootstrap_nav(@pagy) %>
+    </div>
   <% else %>
     <div class="text-center text-light py-5">No public links found.</div>
   <% end %>
