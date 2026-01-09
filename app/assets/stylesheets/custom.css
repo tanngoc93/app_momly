@@ -11,3 +11,116 @@
   image-rendering: crisp-edges;
 }
 
+.public-link-card {
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid rgba(13, 110, 253, 0.08);
+  box-shadow: 0 10px 24px rgba(3, 19, 43, 0.08);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  overflow: hidden;
+}
+
+.public-link-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 30px rgba(3, 19, 43, 0.12);
+}
+
+.public-link-original {
+  font-size: 0.86rem;
+  color: #6c757d;
+}
+
+.public-link-short {
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: #0d6efd;
+}
+
+.public-link-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1f2a44;
+}
+
+.public-link-desc {
+  font-size: 0.85rem;
+  color: #6c757d;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.public-link-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.public-link-meta .meta-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #1f2a44;
+  background: #f1f5ff;
+  border: 1px solid rgba(13, 110, 253, 0.18);
+}
+
+.public-link-meta .meta-pill[data-role="clicks"] {
+  color: #0b4b8a;
+  background: #e7f1ff;
+  border-color: rgba(13, 110, 253, 0.4);
+}
+
+.public-link-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: flex-end;
+  min-width: 132px;
+  flex: 0 0 auto;
+}
+
+.public-link-card .btn {
+  white-space: nowrap;
+}
+
+.public-link-actions .btn {
+  width: 112px;
+  justify-content: center;
+  border-radius: 12px;
+}
+
+.public-link-content {
+  min-width: 0;
+}
+
+@media (max-width: 768px) {
+  .public-link-card {
+    padding: 1rem 1rem;
+  }
+
+  .public-link-card .d-flex.justify-content-between {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .public-link-actions {
+    width: 100%;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .public-link-actions .btn {
+    width: auto;
+    padding: 0.2rem 0.7rem;
+    border-radius: 12px;
+    font-size: 0.78rem;
+    font-weight: 600;
+  }
+}

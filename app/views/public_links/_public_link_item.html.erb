@@ -1,35 +1,32 @@
-<li id="<%= dom_id(link) %>" class="list-group-item rounded-3 shadow-sm px-3 py-2 mb-2 border-0">
-  <div class="d-flex justify-content-between align-items-start">
-    <div class="flex-grow-1 pe-2">
-      <div class="text-muted small mb-1"><%= link.original_url.truncate(48) %></div>
-      <div class="fw-semibold small text-primary">
+<li id="<%= dom_id(link) %>" class="list-group-item public-link-card px-3 py-3 mb-3 border-0">
+  <div class="d-flex justify-content-between align-items-start gap-3">
+    <div class="public-link-content flex-grow-1">
+      <div class="public-link-original mb-1"><%= link.original_url.truncate(72) %></div>
+      <div class="public-link-short mb-1">
         <%= link_to redirect_short_url(link.short_code), redirect_short_url(link.short_code), target: "_blank", class: "text-decoration-none" %>
       </div>
 
       <% if link.page_title.present? %>
-        <div class="mt-2 fw-semibold text-dark-emphasis">
+        <div class="public-link-title">
           <%= truncate(link.page_title, length: 80) %>
           <span class="visually-hidden"><%= link.page_title %></span>
         </div>
       <% end %>
 
-      <% if link.meta_description.present? %>
-        <p class="mb-1 text-muted small">
-          <%= truncate(link.meta_description, length: 140) %>
-          <span class="visually-hidden"><%= link.meta_description %></span>
-        </p>
-      <% end %>
-
-      <div class="d-flex flex-wrap gap-3 mt-1 small fst-italic text-muted">
-        <span><i class="bi bi-bar-chart-fill me-1"></i><%= pluralize(link.click_count, 'click') %></span>
-        <span><i class="bi bi-box-arrow-in-up-right me-1"></i><%= link.created_via.titleize %></span>
-        <span data-controller="tooltip" data-bs-toggle="tooltip" data-bs-title="Created at <%= link.created_at.strftime('%Y-%m-%d %H:%M') %>">
+      <div class="public-link-meta mt-2">
+        <span class="meta-pill" data-role="clicks">
+          <i class="bi bi-bar-chart-fill me-1"></i><%= pluralize(link.click_count, 'click') %>
+        </span>
+        <span class="meta-pill">
+          <i class="bi bi-box-arrow-in-up-right me-1"></i><%= link.created_via.titleize %>
+        </span>
+        <span class="meta-pill" data-controller="tooltip" data-bs-toggle="tooltip" data-bs-title="Created at <%= link.created_at.strftime('%Y-%m-%d %H:%M') %>">
           <i class="bi bi-clock-history me-1"></i><%= link.days_alive.zero? ? 'Today' : "#{link.days_alive}d" %>
         </span>
       </div>
     </div>
 
-    <div>
+    <div class="public-link-actions">
       <button class="btn btn-sm btn-outline-primary"
               style="min-width: 100px;"
               data-controller="clipboard"
@@ -39,7 +36,7 @@
         <span class="clipboard-label">Copy</span>
       </button>
       <%= link_to "QR", qr_short_path(link.short_code),
-                  class: "btn btn-sm btn-outline-secondary ms-2",
+                  class: "btn btn-sm btn-outline-secondary",
                   target: "_blank" %>
     </div>
   </div>

@@ -10,7 +10,7 @@
     </p>
     <% if @pagy %>
       <p class="small text-light-emphasis mb-0">
-        Showing <strong><%= @pagy.items %></strong> per page ·
+        Showing <strong><%= @pagy.vars[:items] %></strong> per page ·
         <strong><%= @pagy.count %></strong> public links total
       </p>
     <% end %>

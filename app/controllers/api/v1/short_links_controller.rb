@@ -10,7 +10,7 @@ module Api
           data: short_links.map { |link| serialized_link(link) },
           pagy: {
             page: @pagy.page,
-            items: @pagy.items,
+            items: @pagy.vars[:items],
             pages: @pagy.pages,
             count: @pagy.count
           }
