@@ -6,7 +6,7 @@ class PublicLinksController < ApplicationController
   def index
     @pagy, @short_links = pagy(
       ShortLink.publicly_visible
-        .where(source: [nil, ShortLink.sources[:web]])
+        .where(source: [nil, ShortLink.sources[:web], ShortLink.sources[:api]])
         .order(created_at: :desc),
       items: 100
     )
